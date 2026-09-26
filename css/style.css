@@ -383,60 +383,6 @@ body {
 /* =========================================================
    12. CONTACT PAGE
    ========================================================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Arial, sans-serif;
-}
-
-body {
-  background-color: #FFFFFF;
-  color: #02343F;
-}
-
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 60px;
-  background-color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(2, 52, 63, 0.08);
-}
-
-.logo {
-  font-size: 24px;
-  font-weight: 700;
-  color: #02343F;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 30px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #02343F;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  color: #F0EDCC;
-  background-color: #02343F;
-  padding: 6px 12px;
-  border-radius: 4px;
-}
-
-/* Contact Section */
-.contact-section {
-  padding: 60px;
-  background-color: #FFFFFF;
-}
 
 .section-title {
   font-size: 42px;
