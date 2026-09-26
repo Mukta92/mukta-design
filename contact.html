@@ -14,63 +14,61 @@
 
 <body>
 
-<header class="header">
+<nav class="navbar">
+  <div class="logo">Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Skills</a></li>
+    <li><a href="#">Education</a></li>
+    <li><a href="#">Work</a></li>
+    <li><a href="#">Experience</a></li>
+    <li><a href="#" class="active">Contact</a></li>
+  </ul>
+</nav>
 
-    <a href="index.html" class="logo">
-        Mukta Design
-    </a>
+<section class="contact-section">
+  <h1 class="section-title">Get In Touch<span></span></h1>
 
-    <nav>
+  <div class="contact-container">
 
-        <a href="index.html">Home</a>
+    <div class="contact-info">
+      <div class="info-card">
+        <div class="icon">✉️</div>
+        <div>
+          <h3>Email</h3>
+          <p>contact@example.com</p>
+        </div>
+      </div>
 
-        <a href="demo-store.html">
-            Demo Store
-        </a>
+      <div class="info-card">
+        <div class="icon">📞</div>
+        <div>
+          <h3>Phone</h3>
+          <p>+1 234 567 890</p>
+        </div>
+      </div>
 
-        <a href="source-code.html">
-            Source Code
-        </a>
-
-        <a href="contact.html">
-            Contact
-        </a>
-
-    </nav>
-
-</header>
-
-
-<main class="container">
-
-    <h1>
-        Contact <span class="highlight">Me</span>
-    </h1>
-
-    <div class="contact-box">
-
-        <p>
-            Have a question about Shopify store design,
-            my tutorials, or the source code?
-        </p>
-
-        <p>
-            Feel free to contact me by email.
-        </p>
-
-        <p>
-            <a
-                class="email"
-                href="mailto:YOUR-EMAIL@example.com"
-            >
-                hello.muktadesign@gmail.com
-            </a>
-        </p>
-
+      <div class="info-card">
+        <div class="icon">📍</div>
+        <div>
+          <h3>Location</h3>
+          <p>New York, USA</p>
+        </div>
+      </div>
     </div>
 
-</main>
+    <form class="contact-form" id="contactForm">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+      <textarea id="message" rows="6" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
 
+  </div>
+</section>
+
+<script src="script.js"></script>
 </body>
 
 </html>
