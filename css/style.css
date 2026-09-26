@@ -131,14 +131,6 @@ body {
    8. GENERAL HIGHLIGHT
    ========================================================= */
 
-.highlight {
-    color: var(--cream);
-
-    background: var(--teal);
-
-    padding: 0 8px;
-}
-
 
 /* =========================================================
    9. HOME PAGE
@@ -391,76 +383,190 @@ body {
 /* =========================================================
    12. CONTACT PAGE
    ========================================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
 
-.contact-page {
-    background: var(--cream);
+body {
+  background-color: #FFFFFF;
+  color: #02343F;
+}
 
-    color: var(--teal);
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(2, 52, 63, 0.08);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #02343F;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #02343F;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #F0EDCC;
+  background-color: #02343F;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+/* Contact Section */
+.contact-section {
+  padding: 60px;
+  background-color: #FFFFFF;
+}
+
+.section-title {
+  font-size: 42px;
+  font-weight: 800;
+  color: #02343F;
+  margin-bottom: 40px;
+  position: relative;
+  display: inline-block;
+}
+
+.section-title span {
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #02343F;
+  margin-top: 10px;
 }
 
 .contact-container {
-    max-width: 700px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
 
-    margin: 80px auto;
+/* Left info cards */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-width: 280px;
+}
 
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: #F0EDCC;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(2, 52, 63, 0.1);
+}
+
+.info-card .icon {
+  font-size: 28px;
+  background-color: #02343F;
+  color: #F0EDCC;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.info-card h3 {
+  font-size: 18px;
+  color: #02343F;
+  margin-bottom: 4px;
+}
+
+.info-card p {
+  font-size: 14px;
+  color: #02343F;
+}
+
+/* Right form */
+.contact-form {
+  flex: 2;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #FFFFFF;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #F0EDCC;
+  box-shadow: 0 4px 12px rgba(2, 52, 63, 0.08);
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 15px;
+  border: 1px solid #02343F33;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+  color: #02343F;
+  resize: none;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #02343F;
+}
+
+.contact-form button {
+  background-color: #02343F;
+  color: #F0EDCC;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 180px;
+}
+
+.contact-form button:hover {
+  background-color: #F0EDCC;
+  color: #02343F;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 15px;
     padding: 20px;
-
-    text-align: center;
+  }
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+  .contact-section {
+    padding: 30px;
+  }
 }
-
-
-/* ---------- CONTACT TITLE ---------- */
-
-.contact-container h1 {
-    font-size: 45px;
-
-    margin-bottom: 30px;
-
-    color: var(--teal);
-}
-
-.contact-container .highlight {
-    color: var(--cream);
-
-    background: var(--teal);
-
-    padding: 0 8px;
-}
-
-
-/* ---------- CONTACT CARD ---------- */
-
-.contact-box {
-    background: var(--white);
-
-    padding: 40px;
-
-    border-radius: 12px;
-}
-
-.contact-box p {
-    color: var(--teal);
-
-    line-height: 1.7;
-
-    margin-bottom: 15px;
-}
-
-
-/* ---------- EMAIL ---------- */
-
-.contact-box .email {
-    color: var(--teal);
-
-    font-weight: 700;
-
-    text-decoration: none;
-}
-
-.contact-box .email:hover {
-    text-decoration: underline;
-}
-
 
 /* =========================================================
    13. FOOTER
