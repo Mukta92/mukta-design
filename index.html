@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mukta Design — Shopify Code Library</title>
+
+    <meta 
+        name="description" 
+        content="Shopify Liquid, CSS, JavaScript and store design code snippets by Mukta Design."
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f8fa;
+            color: #111827;
+        }
+
+        header {
+            background: #00203f;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #d6ed17;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: #d6ed17;
+            color: #00203f;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.85;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Mukta Design</h1>
+    <p>Shopify Code Library</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Shopify Trustpilot Rating</h2>
+
+        <p>
+            Add a custom Trustpilot-style rating badge to your Shopify product page.
+        </p>
+
+        <pre id="code1">&lt;div class="trustpilot-rating"&gt;
+    &lt;strong&gt;Excellent&lt;/strong&gt;
+    &lt;span&gt;★★★★★&lt;/span&gt;
+    &lt;span&gt;4.8 out of 5&lt;/span&gt;
+&lt;/div&gt;</pre>
+
+        <button onclick="copyCode('code1')">
+            Copy Code
+        </button>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Mukta Design · Shopify Store Design Tips & Tricks
+</footer>
+
+<script>
+function copyCode(id) {
+
+    const code = document.getElementById(id).innerText;
+
+    navigator.clipboard.writeText(code);
+
+    alert("Code copied!");
+}
+</script>
+
+</body>
+</html>
