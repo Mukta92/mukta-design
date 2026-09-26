@@ -1,19 +1,16 @@
-/* ========================================
+/* =========================================================
    MUKTA DESIGN
    Global Stylesheet
-   ======================================== */
+   Brand Colors:
+   70% — Deep Teal  #02343F
+   20% — Warm Cream #F0EDCC
+   10% — White      #FFFFFF
+   ========================================================= */
 
 
-/* ---------- RESET ---------- */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-
-/* ---------- COLOR SYSTEM ---------- */
+/* =========================================================
+   1. COLOR SYSTEM
+   ========================================================= */
 
 :root {
     --teal: #02343F;
@@ -22,20 +19,40 @@
 }
 
 
-/* ---------- BODY ---------- */
+/* =========================================================
+   2. RESET
+   ========================================================= */
 
-body {
-    font-family: Arial, sans-serif;
-    background: var(--cream);
-    color: var(--teal);
-    line-height: 1.6;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 
-/* ---------- HEADER ---------- */
+/* =========================================================
+   3. GLOBAL
+   ========================================================= */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background: var(--cream);
+    color: var(--teal);
+}
+
+
+/* =========================================================
+   4. HEADER
+   ========================================================= */
 
 .header {
     background: var(--teal);
+
     padding: 20px 50px;
 
     display: flex;
@@ -44,17 +61,23 @@ body {
 }
 
 
-/* ---------- LOGO ---------- */
+/* =========================================================
+   5. LOGO
+   ========================================================= */
 
 .logo {
     color: var(--white);
+
     text-decoration: none;
+
     font-size: 24px;
     font-weight: 700;
 }
 
 
-/* ---------- NAVIGATION ---------- */
+/* =========================================================
+   6. NAVIGATION
+   ========================================================= */
 
 .navigation {
     display: flex;
@@ -63,9 +86,12 @@ body {
 
 .navigation a {
     color: var(--white);
+
     text-decoration: none;
+
     font-size: 16px;
     font-weight: 500;
+
     transition: 0.2s;
 }
 
@@ -74,7 +100,9 @@ body {
 }
 
 
-/* ---------- BUTTON ---------- */
+/* =========================================================
+   7. GENERAL BUTTON
+   ========================================================= */
 
 .button {
     display: inline-block;
@@ -99,54 +127,444 @@ body {
 }
 
 
-/* ---------- HIGHLIGHT ---------- */
+/* =========================================================
+   8. GENERAL HIGHLIGHT
+   ========================================================= */
 
 .highlight {
     color: var(--cream);
+
     background: var(--teal);
+
     padding: 0 8px;
 }
 
 
-/* ---------- CARDS ---------- */
+/* =========================================================
+   9. HOME PAGE
+   ========================================================= */
 
-.feature-card {
-    background: var(--white);
+.home-page {
+    background: var(--cream);
     color: var(--teal);
 }
 
 
-/* ---------- FOOTER ---------- */
+/* ---------- HERO ---------- */
+
+.hero {
+    max-width: 1000px;
+
+    margin: 100px auto;
+
+    padding: 20px;
+
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 52px;
+
+    margin-bottom: 20px;
+
+    color: var(--teal);
+}
+
+.hero .highlight {
+    color: var(--cream);
+
+    background: var(--teal);
+
+    padding: 0 8px;
+}
+
+.hero p {
+    max-width: 650px;
+
+    margin: 0 auto 30px;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+    color: var(--teal);
+}
+
+
+/* ---------- FEATURES ---------- */
+
+.features {
+    max-width: 1000px;
+
+    margin: 0 auto 80px;
+
+    padding: 20px;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+.feature-card {
+    background: var(--white);
+
+    color: var(--teal);
+
+    padding: 30px;
+
+    border-radius: 12px;
+
+    text-align: center;
+}
+
+.feature-card h3 {
+    margin-bottom: 12px;
+
+    color: var(--teal);
+}
+
+.feature-card p {
+    color: var(--teal);
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   10. DEMO STORE PAGE
+   ========================================================= */
+
+.demo-store-page {
+    background: var(--cream);
+
+    color: var(--teal);
+}
+
+.demo-store-container {
+    max-width: 1000px;
+
+    margin: 80px auto;
+
+    padding: 20px;
+
+    text-align: center;
+}
+
+.demo-store-container h1 {
+    font-size: 45px;
+
+    margin-bottom: 20px;
+
+    color: var(--teal);
+}
+
+.demo-store-container .highlight {
+    color: var(--cream);
+
+    background: var(--teal);
+
+    padding: 0 8px;
+}
+
+.demo-store-container p {
+    color: var(--teal);
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   11. SOURCE CODE PAGE
+   ========================================================= */
+
+.source-code-page {
+    background: var(--cream);
+
+    color: var(--teal);
+}
+
+.source-code-container {
+    max-width: 1000px;
+
+    margin: 70px auto;
+
+    padding: 20px;
+}
+
+
+/* ---------- PAGE TITLE ---------- */
+
+.source-code-container h1 {
+    text-align: center;
+
+    font-size: 45px;
+
+    margin-bottom: 40px;
+
+    color: var(--teal);
+}
+
+.source-code-container .highlight {
+    color: var(--cream);
+
+    background: var(--teal);
+
+    padding: 0 8px;
+}
+
+
+/* ---------- CODE CARD ---------- */
+
+.code-card {
+    background: var(--white);
+
+    padding: 30px;
+
+    border-radius: 12px;
+}
+
+.code-card h2 {
+    margin-bottom: 10px;
+
+    color: var(--teal);
+}
+
+.code-card p {
+    color: var(--teal);
+
+    margin-bottom: 20px;
+}
+
+
+/* ---------- CODE AREA ---------- */
+
+.code-card pre {
+    background: var(--teal);
+
+    color: var(--white);
+
+    padding: 20px;
+
+    border-radius: 8px;
+
+    overflow-x: auto;
+
+    margin-bottom: 15px;
+
+    font-family: "Courier New", monospace;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* ---------- COPY BUTTON ---------- */
+
+.code-card button {
+    background: var(--cream);
+
+    color: var(--teal);
+
+    border: none;
+
+    padding: 12px 20px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    transition: 0.2s;
+}
+
+.code-card button:hover {
+    background: var(--teal);
+
+    color: var(--white);
+}
+
+
+/* =========================================================
+   12. CONTACT PAGE
+   ========================================================= */
+
+.contact-page {
+    background: var(--cream);
+
+    color: var(--teal);
+}
+
+.contact-container {
+    max-width: 700px;
+
+    margin: 80px auto;
+
+    padding: 20px;
+
+    text-align: center;
+}
+
+
+/* ---------- CONTACT TITLE ---------- */
+
+.contact-container h1 {
+    font-size: 45px;
+
+    margin-bottom: 30px;
+
+    color: var(--teal);
+}
+
+.contact-container .highlight {
+    color: var(--cream);
+
+    background: var(--teal);
+
+    padding: 0 8px;
+}
+
+
+/* ---------- CONTACT CARD ---------- */
+
+.contact-box {
+    background: var(--white);
+
+    padding: 40px;
+
+    border-radius: 12px;
+}
+
+.contact-box p {
+    color: var(--teal);
+
+    line-height: 1.7;
+
+    margin-bottom: 15px;
+}
+
+
+/* ---------- EMAIL ---------- */
+
+.contact-box .email {
+    color: var(--teal);
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.contact-box .email:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   13. FOOTER
+   ========================================================= */
 
 footer {
     background: var(--teal);
+
     color: var(--white);
+
     text-align: center;
+
     padding: 30px;
 }
 
 
-/* ---------- LINKS ---------- */
-
-a {
-    color: var(--teal);
-}
-
-
-/* ---------- MOBILE ---------- */
+/* =========================================================
+   14. MOBILE RESPONSIVE
+   ========================================================= */
 
 @media (max-width: 700px) {
 
+
+    /* ---------- HEADER ---------- */
+
     .header {
         flex-direction: column;
+
         gap: 20px;
+
         padding: 20px;
     }
 
+
+    /* ---------- NAVIGATION ---------- */
+
     .navigation {
         gap: 15px;
+
         flex-wrap: wrap;
+
         justify-content: center;
+    }
+
+
+    /* ---------- HOME ---------- */
+
+    .hero {
+        margin: 60px auto;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* ---------- DEMO STORE ---------- */
+
+    .demo-store-container {
+        margin: 60px auto;
+    }
+
+    .demo-store-container h1 {
+        font-size: 38px;
+    }
+
+
+    /* ---------- SOURCE CODE ---------- */
+
+    .source-code-container {
+        margin: 50px auto;
+
+        padding: 15px;
+    }
+
+    .source-code-container h1 {
+        font-size: 38px;
+
+        margin-bottom: 30px;
+    }
+
+    .code-card {
+        padding: 20px;
+    }
+
+
+    /* ---------- CONTACT ---------- */
+
+    .contact-container {
+        margin: 60px auto;
+
+        padding: 15px;
+    }
+
+    .contact-container h1 {
+        font-size: 38px;
+    }
+
+    .contact-box {
+        padding: 25px;
     }
 
 }
