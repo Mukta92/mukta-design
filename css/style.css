@@ -1,1 +1,152 @@
+/* ========================================
+   MUKTA DESIGN
+   Global Stylesheet
+   ======================================== */
 
+
+/* ---------- RESET ---------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ---------- COLOR SYSTEM ---------- */
+
+:root {
+    --teal: #02343F;
+    --cream: #F0EDCC;
+    --white: #FFFFFF;
+}
+
+
+/* ---------- BODY ---------- */
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--cream);
+    color: var(--teal);
+    line-height: 1.6;
+}
+
+
+/* ---------- HEADER ---------- */
+
+.header {
+    background: var(--teal);
+    padding: 20px 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+/* ---------- LOGO ---------- */
+
+.logo {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+/* ---------- NAVIGATION ---------- */
+
+.navigation {
+    display: flex;
+    gap: 30px;
+}
+
+.navigation a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.navigation a:hover {
+    color: var(--cream);
+}
+
+
+/* ---------- BUTTON ---------- */
+
+.button {
+    display: inline-block;
+
+    background: var(--teal);
+    color: var(--white);
+
+    padding: 14px 25px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+.button:hover {
+    background: var(--white);
+    color: var(--teal);
+}
+
+
+/* ---------- HIGHLIGHT ---------- */
+
+.highlight {
+    color: var(--cream);
+    background: var(--teal);
+    padding: 0 8px;
+}
+
+
+/* ---------- CARDS ---------- */
+
+.feature-card {
+    background: var(--white);
+    color: var(--teal);
+}
+
+
+/* ---------- FOOTER ---------- */
+
+footer {
+    background: var(--teal);
+    color: var(--white);
+    text-align: center;
+    padding: 30px;
+}
+
+
+/* ---------- LINKS ---------- */
+
+a {
+    color: var(--teal);
+}
+
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 700px) {
+
+    .header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .navigation {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+}
