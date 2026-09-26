@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact | Mukta Design</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f8fa;
+            color: #00203f;
+        }
+
+        .header {
+            background: #00203f;
+            padding: 20px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: #d6ed17;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 80px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 45px;
+            margin-bottom: 30px;
+        }
+
+        .highlight {
+            color: #d6ed17;
+            background: #00203f;
+            padding: 0 8px;
+        }
+
+        .contact-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .contact-box p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .email {
+            color: #00203f;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <a href="index.html" class="logo">
+        Mukta Design
+    </a>
+
+    <nav>
+
+        <a href="index.html">Home</a>
+
+        <a href="demo-store.html">
+            Demo Store
+        </a>
+
+        <a href="source-code.html">
+            Source Code
+        </a>
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <h1>
+        Contact <span class="highlight">Me</span>
+    </h1>
+
+    <div class="contact-box">
+
+        <p>
+            Have a question about Shopify store design,
+            my tutorials, or the source code?
+        </p>
+
+        <p>
+            Feel free to contact me by email.
+        </p>
+
+        <p>
+            <a
+                class="email"
+                href="mailto:YOUR-EMAIL@example.com"
+            >
+                YOUR-EMAIL@example.com
+            </a>
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+
+</html>
