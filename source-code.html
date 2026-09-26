@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Source Code | Mukta Design</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f8fa;
+            color: #00203f;
+        }
+
+        .header {
+            background: #00203f;
+            padding: 20px 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: #d6ed17;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 70px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 45px;
+            margin-bottom: 40px;
+        }
+
+        .highlight {
+            color: #d6ed17;
+            background: #00203f;
+            padding: 0 8px;
+        }
+
+        .code-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .code-card h2 {
+            margin-bottom: 10px;
+        }
+
+        .code-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background: #d6ed17;
+            color: #00203f;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <a href="index.html" class="logo">
+        Mukta Design
+    </a>
+
+    <nav>
+
+        <a href="index.html">Home</a>
+
+        <a href="demo-store.html">
+            Demo Store
+        </a>
+
+        <a href="source-code.html">
+            Source Code
+        </a>
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <h1>
+        Source <span class="highlight">Code</span>
+    </h1>
+
+
+    <div class="code-card">
+
+        <h2>
+            Trustpilot Rating Badge
+        </h2>
+
+        <p>
+            Custom Trustpilot-style rating badge
+            for a Shopify product page.
+        </p>
+
+        <pre id="code1">&lt;div class="trustpilot-rating"&gt;
+    &lt;strong&gt;Excellent&lt;/strong&gt;
+    &lt;span&gt;★★★★★&lt;/span&gt;
+    &lt;span&gt;4.8 out of 5&lt;/span&gt;
+&lt;/div&gt;</pre>
+
+
+        <button onclick="copyCode('code1')">
+            Copy Code
+        </button>
+
+    </div>
+
+</main>
+
+
+<script>
+
+function copyCode(id) {
+
+    const code = document
+        .getElementById(id)
+        .innerText;
+
+    navigator.clipboard.writeText(code);
+
+    alert("Code copied!");
+
+}
+
+</script>
+
+</body>
+
+</html>
