@@ -1,1 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Card Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f4f1ea;
+        color: #1c3d3a;
+    }
+    h1 {
+        text-align: center;
+    }
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+    textarea {
+        font-family: "Courier New", monospace;
+        min-height: 150px;
+    }
+    button {
+        margin-top: 20px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        background: #1c3d3a;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    button:hover {
+        opacity: 0.9;
+    }
+    #output {
+        margin-top: 30px;
+        background: #1c3d3a;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        white-space: pre-wrap;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        max-height: 500px;
+        overflow: auto;
+    }
+    #copyBtn {
+        margin-top: 10px;
+        background: #d8cdb8;
+        color: #1c3d3a;
+    }
+    #clearBtn {
+        background: #a33;
+        margin-left: 10px;
+    }
+    .count {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #555;
+    }
+</style>
+</head>
+<body>
 
+<h1>Source Code Card Generator (Admin Only)</h1>
+
+<label for="title">Card Title</label>
+<input type="text" id="title" placeholder="e.g. Trustpilot Rating Badge">
+
+<label for="desc">Description</label>
+<input type="text" id="desc" placeholder="Short description of the code">
+
+<label for="code">Source Code</label>
+<textarea id="code" placeholder="Paste your raw HTML/CSS/JS code here"></textarea>
+
+<button onclick="generateCard()">Generate Card</button>
+<button id="clearBtn" onclick="clearAll()">Clear All Cards</button>
+
+<p class="count" id="count">Cards generated this session: 0</p>
+
+<div id="output">Generated cards will appear here...</div>
+
+<button id="copyBtn" onclick="copyOutput()">Copy All Cards</button>
+
+<script>
+
+let cardIndex = parseInt(localStorage.getItem('cardIndex') || '0');
+let allCardsHTML = localStorage.getItem('allCardsHTML') || '';
+
+function escapeHTML(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
+function generateCard() {
+    const title = document.getElementById('title').value.trim();
+    const desc = document.getElementById('desc').value.trim();
+    const code = document.getElementById('code').value.trim();
+
+    if (!title || !desc || !code) {
+        alert("Please fill in Title, Description, and Code before generating.");
+        return;
+    }
+
+    cardIndex++;
+    const id = "code" + cardIndex;
+    const escapedCode = escapeHTML(code);
+
+    const cardHTML =
+`                <!-- CARD ${cardIndex} -->
+                <div class="code-card">
+
+                    <h2>
+                        ${title}
+                    </h2>
+
+                    <p>
+                        ${desc}
+                    </p>
+
+                    <pre id="${id}">${escapedCode}</pre>
+
+                    <button onclick="copyCode('${id}')">
+                        Copy Code
+                    </button>
+
+                </div>
+
+`;
+
+    allCardsHTML += cardHTML;
+
+    localStorage.setItem('cardIndex', cardIndex);
+    localStorage.setItem('allCardsHTML', allCardsHTML);
+
+    document.getElementById('output').textContent = allCardsHTML;
+    document.getElementById('count').textContent = "Cards generated this session: " + cardIndex;
+
+    // Clear form for next entry
+    document.getElementById('title').value = '';
+    document.getElementById('desc').value = '';
+    document.getElementById('code').value = '';
+}
+
+function copyOutput() {
+    if (!allCardsHTML) {
+        alert("No cards to copy yet.");
+        return;
+    }
+    navigator.clipboard.writeText(allCardsHTML);
+    alert("All generated cards copied! Paste them inside your .code-grid in source-code.html");
+}
+
+function clearAll() {
+    if (confirm("This will clear all generated cards from this tool. Continue?")) {
+        cardIndex = 0;
+        allCardsHTML = '';
+        localStorage.removeItem('cardIndex');
+        localStorage.removeItem('allCardsHTML');
+        document.getElementById('output').textContent = "Generated cards will appear here...";
+        document.getElementById('count').textContent = "Cards generated this session: 0";
+    }
+}
+
+// Restore previous session on load
+if (allCardsHTML) {
+    document.getElementById('output').textContent = allCardsHTML;
+    document.getElementById('count').textContent = "Cards generated this session: " + cardIndex;
+}
+
+</script>
+
+</body>
+</html>
