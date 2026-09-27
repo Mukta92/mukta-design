@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Source Code Detail | Mukta Design</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!--------- HEADER --------->
+    <header class="header">
+        <a href="index.html" class="logo"> Mukta Design </a>
+        <nav class="navigation">
+            <a href="index.html">Home</a>
+            <a href="demo-store.html"> Demo Store </a>
+            <a href="source-code.html"> Source Code </a>
+            <a href="contact.html"> Contact </a>
+        </nav>
+    </header>
+
+    <main class="source-code-page">
+        <div class="source-code-container detail-container">
+
+            <a href="source-code.html" class="back-button">&larr; Back to Source Code</a>
+
+            <div id="detailContent">
+                <p>Loading...</p>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+
+    function copyCode(id) {
+        const code = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(code);
+        alert("Code copied!");
+    }
+
+    async function loadCard() {
+
+        const params = new URLSearchParams(window.location.search);
+        const cardId = params.get('id');
+        const container = document.getElementById('detailContent');
+
+        if (!cardId) {
+            container.innerHTML = "<p>No card specified.</p>";
+            return;
+        }
+
+        try {
+            const res = await fetch('source-code.html');
+            const html = await res.text();
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+
+            const pre = doc.getElementById(cardId);
+
+            if (!pre) {
+                container.innerHTML = "<p>Card not found.</p>";
+                return;
+            }
+
+            const card = pre.closest('.code-card');
+            const title = card.querySelector('h2') ? card.querySelector('h2').innerHTML : '';
+            const desc = card.querySelector('p') ? card.querySelector('p').innerHTML : '';
+            const codeText = pre.innerHTML;
+
+            document.title = (card.querySelector('h2') ? card.querySelector('h2').textContent.trim() : 'Source Code') + " | Mukta Design";
+
+            container.innerHTML =
+                '<h1>' + title + '</h1>' +
+                '<p class="detail-desc">' + desc + '</p>' +
+                '<pre id="' + cardId + '" class="detail-pre">' + codeText + '</pre>' +
+                '<button onclick="copyCode(\'' + cardId + '\')">Copy Code</button>';
+
+        } catch (err) {
+            container.innerHTML = "<p>Could not load this card. Please try again.</p>";
+        }
+    }
+
+    loadCard();
+
+    </script>
+
+</body>
+
+</html>
