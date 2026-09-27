@@ -3,24 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Card Generator</title>
+<title>Admin - Publish Card</title>
 <style>
     body {
         font-family: Arial, sans-serif;
-        max-width: 800px;
+        max-width: 700px;
         margin: 40px auto;
         padding: 20px;
         background: #f4f1ea;
         color: #1c3d3a;
     }
-    h1 {
-        text-align: center;
-    }
-    label {
-        display: block;
-        margin-top: 15px;
-        font-weight: bold;
-    }
+    h1 { text-align: center; }
+    label { display: block; margin-top: 15px; font-weight: bold; }
     input, textarea {
         width: 100%;
         padding: 10px;
@@ -30,10 +24,7 @@
         box-sizing: border-box;
         font-family: inherit;
     }
-    textarea {
-        font-family: "Courier New", monospace;
-        min-height: 150px;
-    }
+    textarea { font-family: "Courier New", monospace; min-height: 150px; }
     button {
         margin-top: 20px;
         padding: 12px 20px;
@@ -44,40 +35,27 @@
         font-weight: bold;
         cursor: pointer;
     }
-    button:hover {
-        opacity: 0.9;
+    button:hover { opacity: 0.9; }
+    #status {
+        margin-top: 20px;
+        padding: 12px;
+        border-radius: 6px;
+        display: none;
+        font-weight: bold;
     }
-    #output {
-        margin-top: 30px;
-        background: #1c3d3a;
-        color: white;
-        padding: 20px;
-        border-radius: 8px;
-        white-space: pre-wrap;
-        font-family: "Courier New", monospace;
-        font-size: 13px;
-        max-height: 500px;
-        overflow: auto;
-    }
-    #copyBtn {
-        margin-top: 10px;
-        background: #d8cdb8;
-        color: #1c3d3a;
-    }
-    #clearBtn {
-        background: #a33;
-        margin-left: 10px;
-    }
-    .count {
-        margin-top: 10px;
-        font-size: 14px;
-        color: #555;
-    }
+    .success { background: #d4f5d4; color: #1c3d3a; display: block !important; }
+    .error { background: #f5d4d4; color: #7a1c1c; display: block !important; }
+    .loading { background: #f5edd4; color: #1c3d3a; display: block !important; }
+    small { color: #666; }
 </style>
 </head>
 <body>
 
-<h1>Source Code Card Generator (Admin Only)</h1>
+<h1>Publish Source Code Card</h1>
+
+<label for="token">GitHub Token (paste once per browser session)</label>
+<input type="password" id="token" placeholder="github_pat_...">
+<small>Not saved permanently — you'll need to paste it again if you close this tab.</small>
 
 <label for="title">Card Title</label>
 <input type="text" id="title" placeholder="e.g. Trustpilot Rating Badge">
@@ -88,43 +66,72 @@
 <label for="code">Source Code</label>
 <textarea id="code" placeholder="Paste your raw HTML/CSS/JS code here"></textarea>
 
-<button onclick="generateCard()">Generate Card</button>
-<button id="clearBtn" onclick="clearAll()">Clear All Cards</button>
+<button onclick="publishCard()">Publish Card</button>
 
-<p class="count" id="count">Cards generated this session: 0</p>
-
-<div id="output">Generated cards will appear here...</div>
-
-<button id="copyBtn" onclick="copyOutput()">Copy All Cards</button>
+<div id="status"></div>
 
 <script>
 
-let cardIndex = parseInt(localStorage.getItem('cardIndex') || '0');
-let allCardsHTML = localStorage.getItem('allCardsHTML') || '';
+const OWNER = "mukta92";
+const REPO = "mukta-design";
+const BRANCH = "main";
+const FILE_PATH = "source-code.html";
 
 function escapeHTML(str) {
-    return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-function generateCard() {
+function utf8ToBase64(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+}
+
+function base64ToUtf8(str) {
+    return decodeURIComponent(escape(atob(str)));
+}
+
+function setStatus(msg, type) {
+    const el = document.getElementById('status');
+    el.textContent = msg;
+    el.className = type;
+}
+
+async function publishCard() {
+    const token = document.getElementById('token').value.trim();
     const title = document.getElementById('title').value.trim();
     const desc = document.getElementById('desc').value.trim();
     const code = document.getElementById('code').value.trim();
 
-    if (!title || !desc || !code) {
-        alert("Please fill in Title, Description, and Code before generating.");
+    if (!token || !title || !desc || !code) {
+        setStatus("Please fill in Token, Title, Description, and Code.", "error");
         return;
     }
 
-    cardIndex++;
-    const id = "code" + cardIndex;
-    const escapedCode = escapeHTML(code);
+    setStatus("Publishing... please wait.", "loading");
 
-    const cardHTML =
-`                <!-- CARD ${cardIndex} -->
+    try {
+        // 1. Get current file content + sha
+        const getRes = await fetch(
+            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}?ref=${BRANCH}`,
+            { headers: { Authorization: `token ${token}` } }
+        );
+
+        if (!getRes.ok) {
+            throw new Error("Could not fetch file. Check your token and repo details.");
+        }
+
+        const fileData = await getRes.json();
+        const currentContent = base64ToUtf8(fileData.content.replace(/\n/g, ""));
+        const sha = fileData.sha;
+
+        // 2. Work out next card number
+        const matches = [...currentContent.matchAll(/id="code(\d+)"/g)];
+        const maxId = matches.length ? Math.max(...matches.map(m => parseInt(m[1]))) : 0;
+        const nextId = maxId + 1;
+        const idStr = "code" + nextId;
+
+        // 3. Build new card HTML
+        const newCard =
+`                <!-- CARD ${nextId} -->
                 <div class="code-card">
 
                     <h2>
@@ -135,9 +142,9 @@ function generateCard() {
                         ${desc}
                     </p>
 
-                    <pre id="${id}">${escapedCode}</pre>
+                    <pre id="${idStr}">${escapeHTML(code)}</pre>
 
-                    <button onclick="copyCode('${id}')">
+                    <button onclick="copyCode('${idStr}')">
                         Copy Code
                     </button>
 
@@ -145,44 +152,47 @@ function generateCard() {
 
 `;
 
-    allCardsHTML += cardHTML;
+        // 4. Insert before marker
+        const marker = "<!-- CARDS_END -->";
+        if (!currentContent.includes(marker)) {
+            throw new Error(`Marker "${marker}" not found in source-code.html. Please add it before .code-grid closes.`);
+        }
 
-    localStorage.setItem('cardIndex', cardIndex);
-    localStorage.setItem('allCardsHTML', allCardsHTML);
+        const updatedContent = currentContent.replace(marker, newCard + marker);
 
-    document.getElementById('output').textContent = allCardsHTML;
-    document.getElementById('count').textContent = "Cards generated this session: " + cardIndex;
+        // 5. Push update to GitHub
+        const putRes = await fetch(
+            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`,
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: `token ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: `Add card: ${title}`,
+                    content: utf8ToBase64(updatedContent),
+                    sha: sha,
+                    branch: BRANCH
+                })
+            }
+        );
 
-    // Clear form for next entry
-    document.getElementById('title').value = '';
-    document.getElementById('desc').value = '';
-    document.getElementById('code').value = '';
-}
+        if (!putRes.ok) {
+            const errData = await putRes.json();
+            throw new Error(errData.message || "Failed to publish.");
+        }
 
-function copyOutput() {
-    if (!allCardsHTML) {
-        alert("No cards to copy yet.");
-        return;
+        setStatus(`Published as ${idStr}! Live in ~30-60 seconds.`, "success");
+
+        // Clear form (keep token for next card)
+        document.getElementById('title').value = '';
+        document.getElementById('desc').value = '';
+        document.getElementById('code').value = '';
+
+    } catch (err) {
+        setStatus("Error: " + err.message, "error");
     }
-    navigator.clipboard.writeText(allCardsHTML);
-    alert("All generated cards copied! Paste them inside your .code-grid in source-code.html");
-}
-
-function clearAll() {
-    if (confirm("This will clear all generated cards from this tool. Continue?")) {
-        cardIndex = 0;
-        allCardsHTML = '';
-        localStorage.removeItem('cardIndex');
-        localStorage.removeItem('allCardsHTML');
-        document.getElementById('output').textContent = "Generated cards will appear here...";
-        document.getElementById('count').textContent = "Cards generated this session: 0";
-    }
-}
-
-// Restore previous session on load
-if (allCardsHTML) {
-    document.getElementById('output').textContent = allCardsHTML;
-    document.getElementById('count').textContent = "Cards generated this session: " + cardIndex;
 }
 
 </script>
