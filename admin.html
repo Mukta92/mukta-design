@@ -52,18 +52,15 @@
 <body>
 
 <h1>Publish Source Code Card</h1>
-
-<label for="token">GitHub Token (paste once per browser session)</label>
+<label for="token">GitHub Token</label>
 <input type="password" id="token" placeholder="github_pat_...">
-<small>Not saved permanently — you'll need to paste it again if you close this tab.</small>
-
+<small>Used only for this publishing session.</small>
 <label for="title">Card Title</label>
 <input type="text" id="title" placeholder="e.g. Trustpilot Rating Badge">
 <label for="code">Source Code</label>
 <textarea id="code" placeholder="Paste your raw HTML/CSS/JS code here"></textarea>
-
-<button onclick="publishCard()">Publish Card</button>
-
+<button type="button" onclick="publishCard()">Publish Card</button>
+    
 <div id="status"></div>
 
 <script>
