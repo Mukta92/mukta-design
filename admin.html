@@ -93,10 +93,10 @@ async function publishCard() {
     const title = document.getElementById('title').value.trim();
     const code = document.getElementById('code').value.trim();
 
-    if (!token || !title || !desc || !code) {
-        setStatus("Please fill in Token, Title, Description, and Code.", "error");
-        return;
-    }
+if (!token || !title || !code) {
+    setStatus("Please fill in Token, Title, and Code.", "error");
+    return;
+}
 
     setStatus("Publishing... please wait.", "loading");
 
@@ -127,10 +127,6 @@ async function publishCard() {
                     <h2>
                         ${title}
                     </h2>
-
-                    <p>
-                        ${desc}
-                    </p>
 
                     <pre id="${idStr}">${escapeHTML(code)}</pre>
 
@@ -178,7 +174,6 @@ async function publishCard() {
         setStatus(`Published as ${idStr}! Live in ~30-60 seconds.`, "success");
 
         document.getElementById('title').value = '';
-        document.getElementById('desc').value = '';
         document.getElementById('code').value = '';
 
     } catch (err) {
