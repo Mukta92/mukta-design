@@ -142,9 +142,12 @@ async function publishCard() {
 
                     <pre id="${idStr}">${escapeHTML(code)}</pre>
 
-                    <button onclick="event.preventDefault(); copyCode('${idStr}')">
-                        Copy Code
-                    </button>
+                    <div class="card-actions">
+                        <button onclick="event.preventDefault(); copyCode('${idStr}')">
+                            Copy Code
+                        </button>
+                        <span class="view-link">Full View &rarr;</span>
+                    </div>
 
                 </div>
                 </a>
