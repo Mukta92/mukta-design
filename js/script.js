@@ -43,6 +43,23 @@ if (contactForm) {
 
 }
 
+
+
+function copyCode(id) {
+
+    const code = document
+        .getElementById(id)
+        .innerText;
+
+    navigator.clipboard.writeText(code);
+
+    alert("Code copied!");
+
+}
+
+
+
+
 /* ======================================================
    CONTACT US PAGE - END
    ====================================================== */
