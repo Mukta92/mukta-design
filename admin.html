@@ -132,6 +132,7 @@ async function publishCard() {
         // 3. Build new card HTML
         const newCard =
 `                <!-- CARD ${nextId} -->
+                <a href="code-detail.html?id=${idStr}" class="code-card-link">
                 <div class="code-card">
 
                     <h2>
@@ -144,12 +145,12 @@ async function publishCard() {
 
                     <pre id="${idStr}">${escapeHTML(code)}</pre>
 
-                    <button onclick="copyCode('${idStr}')">
+                    <button onclick="event.preventDefault(); copyCode('${idStr}')">
                         Copy Code
                     </button>
 
                 </div>
-
+                </a>
 `;
 
         // 4. Insert before marker
