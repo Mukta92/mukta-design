@@ -91,7 +91,6 @@ function setStatus(msg, type) {
 async function publishCard() {
     const token = document.getElementById('token').value.trim();
     const title = document.getElementById('title').value.trim();
-    const desc = document.getElementById('desc').value.trim();
     const code = document.getElementById('code').value.trim();
 
     if (!token || !title || !desc || !code) {
