@@ -109,7 +109,6 @@ async function publishCard() {
     setStatus("Publishing... please wait.", "loading");
 
     try {
-        // 1. Get current file content + sha
         const getRes = await fetch(
             `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}?ref=${BRANCH}`,
             { headers: { Authorization: `token ${token}` } }
@@ -123,13 +122,11 @@ async function publishCard() {
         const currentContent = base64ToUtf8(fileData.content.replace(/\n/g, ""));
         const sha = fileData.sha;
 
-        // 2. Work out next card number
         const matches = [...currentContent.matchAll(/id="code(\d+)"/g)];
         const maxId = matches.length ? Math.max(...matches.map(m => parseInt(m[1]))) : 0;
         const nextId = maxId + 1;
         const idStr = "code" + nextId;
 
-        // 3. Build new card HTML
         const newCard =
 `                <!-- CARD ${nextId} -->
                 <a href="code-detail.html?id=${idStr}" class="code-card-link">
@@ -151,9 +148,9 @@ async function publishCard() {
 
                 </div>
                 </a>
+
 `;
 
-        // 4. Insert before marker
         const marker = "<!-- CARDS_END -->";
         if (!currentContent.includes(marker)) {
             throw new Error(`Marker "${marker}" not found in source-code.html. Please add it before .code-grid closes.`);
@@ -161,7 +158,6 @@ async function publishCard() {
 
         const updatedContent = currentContent.replace(marker, newCard + marker);
 
-        // 5. Push update to GitHub
         const putRes = await fetch(
             `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`,
             {
@@ -186,7 +182,6 @@ async function publishCard() {
 
         setStatus(`Published as ${idStr}! Live in ~30-60 seconds.`, "success");
 
-        // Clear form (keep token for next card)
         document.getElementById('title').value = '';
         document.getElementById('desc').value = '';
         document.getElementById('code').value = '';
