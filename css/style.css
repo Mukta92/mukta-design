@@ -270,18 +270,14 @@ body {
 /* =========================================================
    11. SOURCE CODE PAGE
    ========================================================= */
-
 .source-code-page {
     background: var(--cream);
-
     color: var(--teal);
 }
 
 .source-code-container {
     max-width: 1000px;
-
     margin: 70px auto;
-
     padding: 20px;
 }
 
@@ -290,20 +286,24 @@ body {
 
 .source-code-container h1 {
     text-align: center;
-
     font-size: 45px;
-
     margin-bottom: 40px;
-
     color: var(--teal);
 }
 
 .source-code-container .highlight {
     color: var(--cream);
-
     background: var(--teal);
-
     padding: 0 8px;
+}
+
+
+/* ---------- CODE GRID ---------- */
+
+.code-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
 }
 
 
@@ -311,21 +311,29 @@ body {
 
 .code-card {
     background: var(--white);
-
     padding: 30px;
-
     border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    .code-card {
+        aspect-ratio: auto;
+    }
 }
 
 .code-card h2 {
     margin-bottom: 10px;
-
     color: var(--teal);
 }
 
 .code-card p {
     color: var(--teal);
-
     margin-bottom: 20px;
 }
 
@@ -334,22 +342,15 @@ body {
 
 .code-card pre {
     background: var(--teal);
-
     color: var(--white);
-
     padding: 20px;
-
     border-radius: 8px;
-
-    overflow-x: auto;
-
+    overflow: auto;
     margin-bottom: 15px;
-
     font-family: "Courier New", monospace;
-
-    font-size: 14px;
-
+    font-size: 13px;
     line-height: 1.6;
+    flex: 1;
 }
 
 
@@ -357,28 +358,19 @@ body {
 
 .code-card button {
     background: var(--cream);
-
     color: var(--teal);
-
     border: none;
-
     padding: 12px 20px;
-
     border-radius: 6px;
-
     cursor: pointer;
-
     font-weight: bold;
-
     transition: 0.2s;
 }
 
 .code-card button:hover {
     background: var(--teal);
-
     color: var(--white);
 }
-
 
 /* =========================================================
    12. CONTACT PAGE
