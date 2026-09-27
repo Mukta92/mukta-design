@@ -79,12 +79,14 @@
 
             document.title = (card.querySelector('h2') ? card.querySelector('h2').textContent.trim() : 'Source Code') + " | Mukta Design";
 
-            container.innerHTML =
-                '<h1>' + title + '</h1>' +
-                '<p class="detail-desc">' + desc + '</p>' +
-                '<pre id="' + cardId + '" class="detail-pre">' + codeText + '</pre>' +
-            '<button class="copy-btn" onclick="copyCode(\'' + cardId + '\')">Copy Code</button>';
+container.innerHTML =
+    '<h1>' + title + '</h1>' +
+    '<p class="detail-desc">' + desc + '</p>' +
+    '<pre id="' + cardId + '" class="detail-pre">' + codeText + '</pre>' +
+    '<div class="button-group">' +
+        '<button class="copy-btn" onclick="copyCode(\'' + cardId + '\')">Copy Code</button>' +
         '<a href="source-code.html" class="back-button">&larr; Back to Source Code</a>' +
+    '</div>';
 
         } catch (err) {
             container.innerHTML = "<p>Could not load this card. Please try again.</p>";
