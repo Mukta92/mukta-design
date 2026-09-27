@@ -372,6 +372,70 @@ body {
     color: var(--white);
 }
 
+
+
+/* ---------- BACK BUTTON ---------- */
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 30px;
+    color: var(--teal);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+
+/* ---------- DETAIL PAGE ---------- */
+
+.detail-container h1 {
+    text-align: left;
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.detail-desc {
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.detail-pre {
+    background: var(--teal);
+    color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    overflow: auto;
+    margin-bottom: 20px;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    max-height: 500px;
+}
+
+
+/* ---------- CLICKABLE CARD LINK ---------- */
+
+.code-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.code-card-link .code-card {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.code-card-link:hover .code-card {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+
+
 /* =========================================================
    12. CONTACT PAGE
    ========================================================= */
