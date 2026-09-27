@@ -83,7 +83,7 @@
                 '<h1>' + title + '</h1>' +
                 '<p class="detail-desc">' + desc + '</p>' +
                 '<pre id="' + cardId + '" class="detail-pre">' + codeText + '</pre>' +
-                '<button onclick="copyCode(\'' + cardId + '\')">Copy Code</button>';
+            '<button class="copy-btn" onclick="copyCode(\'' + cardId + '\')">Copy Code</button>';
 
         } catch (err) {
             container.innerHTML = "<p>Could not load this card. Please try again.</p>";
