@@ -44,18 +44,18 @@ if (contactForm) {
 }
 
 
+    // --- code for source code ---
+    function copyCode(id) {
 
-function copyCode(id) {
+        const code = document
+            .getElementById(id)
+            .innerText;
 
-    const code = document
-        .getElementById(id)
-        .innerText;
+        navigator.clipboard.writeText(code);
 
-    navigator.clipboard.writeText(code);
+        alert("Code copied!");
 
-    alert("Code copied!");
-
-}
+    }
 
 
 
