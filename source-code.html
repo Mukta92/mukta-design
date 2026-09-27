@@ -142,6 +142,41 @@ if (!token || !title || !code) {
                 </div>
                 </a>
 
+                <!-- CARD 4 -->
+                <a href="code-detail.html?id=code4" class="code-card-link">
+                <div class="code-card">
+
+                    <h2>
+                        MUkat 4
+                    </h2>
+
+                    <pre id="code4">`;
+
+        const marker = "&lt;!-- CARDS_END --&gt;";
+        if (!currentContent.includes(marker)) {
+            throw new Error(`Marker "${marker}" not found in source-code.html. Please add it before .code-grid closes.`);
+        }
+
+        const updatedContent = currentContent.replace(marker, newCard + marker);
+
+        const putRes = await fetch(
+            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`,
+            {
+                method: "PUT",
+                headers: {
+                    Authorization: `token ${token}`,
+                    "Content-Type": "application/json"</pre>
+
+                    <div class="card-actions">
+                        <button onclick="event.preventDefault(); copyCode('code4')">
+                            Copy Code
+                        </button>
+                        <span class="view-link">Full View &rarr;</span>
+                    </div>
+
+                </div>
+                </a>
+
 <!-- CARDS_END -->
 
             </div>
