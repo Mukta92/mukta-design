@@ -66,11 +66,12 @@ body {
   text-decoration: none;
   transition: color .2s ease;
 }
-.yt-icon {
+svg.yt-icon {
   width: 20px;
-  height: 20px;
+  height: 30px;
   flex: none;
 }
+
 .announcement:hover {
   background: #F0EDCC;       /* hover colour change on the whole div */
 }
