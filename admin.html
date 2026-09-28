@@ -85,7 +85,7 @@
 <input type="text" id="filename" placeholder="e.g. TrustpilotCode.txt">
 <small>Use letters, numbers, hyphens or underscores. .txt will be added automatically if needed.</small>
 
-<label for="image">Card Image (jpg, png or webp, max 2 MB)</label>
+<label for="image">Card Image (jpg, png or webp, max 500 kb)</label>
 <input type="file" id="image" accept="image/jpeg,image/png,image/webp">
 
 <label for="code">Source Code</label>
@@ -279,7 +279,7 @@ async function publishCard() {
 
     if (file.size > MAX_IMAGE_BYTES) {
         setStatus(
-            "Image is too large. Maximum is 2 MB.",
+            "Image is too large. Maximum is 500 kb.",
             "error"
         );
         return;
