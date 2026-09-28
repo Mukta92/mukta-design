@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Source Code | Mukta Design</title>
-<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
     <!--------- HEADER --------->
@@ -24,182 +19,75 @@
         </nav>
     </header>
 
-
     <main class="source-code-page">
         <div class="source-code-container">
 
-            <h1>
-                Source <span class="highlight">Code</span>
-            </h1>
+            <h1>Source <span class="highlight">Code</span></h1>
 
-            <div class="code-grid">
-
-
-
-                
-<!-- CARD 1 -->
-<a href="code-detail.html?id=code1" class="code-card-link">
-<div class="code-card">
-
-    <h2> Mukta 01 </h2>
-    
-    <pre id="code1">&lt;!--------- HEADER ---------&gt;
-    &lt;header class="header"&gt;
-        &lt;a href="index.html" class="logo"&gt; Mukta Design &lt;/a&gt;
-        &lt;nav class="navigation"&gt;
-            &lt;a href="index.html"&gt;Home&lt;/a&gt;
-            &lt;a href="demo-store.html"&gt; Demo Store &lt;/a&gt;
-            &lt;a href="source-code.html"&gt; Source Code &lt;/a&gt;
-            &lt;a href="contact.html"&gt; Contact &lt;/a&gt;
-        &lt;/nav&gt;
-    &lt;/header&gt;</pre>
-
-    <div class="card-actions">
-        <button onclick="event.preventDefault(); copyCode('code1')">
-            Copy Code
-        </button>
-        <span class="view-link">Full View →</span>
-    </div>
-
-</div>
-</a>
-
-                <!-- CARD 2 -->
-                <a href="code-detail.html?id=code2" class="code-card-link">
-                <div class="code-card">
-
-                    <h2>
-                        mukta 02
-                    </h2>
-
-                    <pre id="code2">&lt;!DOCTYPE html&gt;
-&lt;html lang="en"&gt;
-&lt;head&gt;
-&lt;meta charset="UTF-8"&gt;
-&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-&lt;title&gt;Admin - Publish Card&lt;/title&gt;
-&lt;style&gt;
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 700px;
-        margin: 40px auto;
-        padding: 20px;
-        background: #f4f1ea;
-        color: #1c3d3a;
-    }</pre>
-
-                    <div class="card-actions">
-                        <button onclick="event.preventDefault(); copyCode('code2')">
-                            Copy Code
-                        </button>
-                        <span class="view-link">Full View &rarr;</span>
-                    </div>
-
-                </div>
-                </a>
-
-                <!-- CARD 3 -->
-                <a href="code-detail.html?id=code3" class="code-card-link">
-                <div class="code-card">
-
-                    <h2>
-                        mukt 3
-                    </h2>
-
-                    <pre id="code3">function utf8ToBase64(str) {
-    return btoa(unescape(encodeURIComponent(str)));
-}
-
-function base64ToUtf8(str) {
-    return decodeURIComponent(escape(atob(str)));
-}
-
-function setStatus(msg, type) {
-    const el = document.getElementById('status');
-    el.textContent = msg;
-    el.className = type;
-}
-
-async function publishCard() {
-    const token = document.getElementById('token').value.trim();
-    const title = document.getElementById('title').value.trim();
-    const code = document.getElementById('code').value.trim();
-
-if (!token || !title || !code) {
-    setStatus("Please fill in Token, Title, and Code.", "error");
-    return;
-}
-
-    setStatus("Publishing... please wait.", "loading")</pre>
-
-                    <div class="card-actions">
-                        <button onclick="event.preventDefault(); copyCode('code3')">
-                            Copy Code
-                        </button>
-                        <span class="view-link">Full View &rarr;</span>
-                    </div>
-
-                </div>
-                </a>
-
-                <!-- CARD 4 -->
-                <a href="code-detail.html?id=code4" class="code-card-link">
-                <div class="code-card">
-
-                    <h2>
-                        MUkat 4
-                    </h2>
-
-                    <pre id="code4">`;
-
-        const marker = "&lt;!-- CARDS_END --&gt;";
-        if (!currentContent.includes(marker)) {
-            throw new Error(`Marker "${marker}" not found in source-code.html. Please add it before .code-grid closes.`);
-        }
-
-        const updatedContent = currentContent.replace(marker, newCard + marker);
-
-        const putRes = await fetch(
-            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`,
-            {
-                method: "PUT",
-                headers: {
-                    Authorization: `token ${token}`,
-                    "Content-Type": "application/json"</pre>
-
-                    <div class="card-actions">
-                        <button onclick="event.preventDefault(); copyCode('code4')">
-                            Copy Code
-                        </button>
-                        <span class="view-link">Full View &rarr;</span>
-                    </div>
-
-                </div>
-                </a>
-
-<!-- CARDS_END -->
-
+            <div class="code-grid" id="codeGrid">
+                <p class="grid-message">Loading...</p>
             </div>
 
         </div>
     </main>
 
     <script>
+    async function loadCards() {
+        const grid = document.getElementById('codeGrid');
 
-    function copyCode(id) {
+        try {
+            const res = await fetch('cards.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('Could not load cards.');
+            const cards = await res.json();
 
-        const code = document
-            .getElementById(id)
-            .innerText;
+            grid.textContent = '';
 
-        navigator.clipboard.writeText(code);
+            if (!Array.isArray(cards) || cards.length === 0) {
+                const p = document.createElement('p');
+                p.className = 'grid-message';
+                p.textContent = 'No cards yet.';
+                grid.appendChild(p);
+                return;
+            }
 
-        alert("Code copied!");
+            cards.forEach(function (card) {
+                if (!card || !/^[a-z0-9-]+$/.test(card.id || '')) return;
+                if (typeof card.image !== 'string' || card.image.indexOf('images/') !== 0) return;
 
+                const link = document.createElement('a');
+                link.className = 'code-card-link';
+                link.href = 'code-detail.html?id=' + encodeURIComponent(card.id);
+
+                const box = document.createElement('div');
+                box.className = 'code-card';
+
+                const img = document.createElement('img');
+                img.className = 'card-image';
+                img.src = card.image;
+                img.alt = card.title || 'Source code preview';
+                img.loading = 'lazy';
+
+                const btn = document.createElement('span');
+                btn.className = 'get-code-btn';
+                btn.textContent = 'Get Code';
+
+                box.appendChild(img);
+                box.appendChild(btn);
+                link.appendChild(box);
+                grid.appendChild(link);
+            });
+
+        } catch (err) {
+            grid.textContent = '';
+            const p = document.createElement('p');
+            p.className = 'grid-message';
+            p.textContent = 'Could not load cards. Please try again.';
+            grid.appendChild(p);
+        }
     }
 
+    loadCards();
     </script>
 
 </body>
-
 </html>
