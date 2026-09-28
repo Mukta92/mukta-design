@@ -1,123 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Misbah Ahmed | UI/UX Designer & Front-End Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 
-    <title>Mukta Design | Shopify Store Design</title>
+<style>
+    :root{ --bg:#f2f2f2; --ink:#0d0d0d; --orange:#f0b064; --peach:#f7e3cf; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overflow-x:hidden}
 
-    <meta 
-        name="description" 
-        content="Shopify store design tips, tricks, demos and source code by Mukta Design."
-    >
+.hero{
+  min-height:100vh;display:grid;grid-template-columns:1.15fr 1fr;align-items:center;
+  padding:60px 6vw 60px 10vw;max-width:1500px;margin:0 auto;
+}
+.hero-text{position:relative;z-index:3}
+.intro{font-size:1.15rem;margin-bottom:10px}
+.intro strong{font-weight:600;letter-spacing:.01em}
 
-<link rel="stylesheet" href="css/style.css">
+h1{font-family:"Lexend",sans-serif;font-weight:800;line-height:1.05;white-space:nowrap}
+.solid{display:block;font-size:clamp(2.2rem,5.2vw,4.4rem)}
+.outline{display:block;font-size:clamp(1.9rem,4.4vw,3.7rem);
+  color:transparent;-webkit-text-stroke:2px var(--ink);margin-top:2px}
+
+.buttons{display:flex;gap:18px;margin-top:38px}
+.btn{font:600 .85rem "Source Sans 3",sans-serif;text-decoration:none;padding:12px 22px;
+  border-radius:5px;border:1.5px solid var(--ink);transition:transform .15s,background .15s,color .15s}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-light{background:transparent;color:var(--ink)}
+.btn:hover{transform:translateY(-2px)}
+.btn-light:hover{background:var(--ink);color:#fff}
+.btn:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+
+/* photo */
+.hero-photo{position:relative;justify-self:end;width:min(500px,100%);aspect-ratio:1/1.1;z-index:1;margin-left:-40px}
+.blob{position:absolute;inset:0;background:var(--orange);overflow:hidden;
+  border-radius:52% 48% 46% 54% / 40% 52% 48% 60%}
+.blob img{width:100%;height:100%;object-fit:cover;display:block}
+
+.hatch{position:absolute;width:95px;height:95px;z-index:2;
+  background:repeating-linear-gradient(135deg,var(--ink) 0 1.5px,transparent 1.5px 9px)}
+.hatch-top{top:2%;right:2%;-webkit-mask:linear-gradient(45deg,transparent 50%,#000 50%);mask:linear-gradient(45deg,transparent 50%,#000 50%)}
+.hatch-bottom{bottom:4%;left:5%;-webkit-mask:linear-gradient(225deg,transparent 50%,#000 50%);mask:linear-gradient(225deg,transparent 50%,#000 50%)}
+
+.star{position:absolute;background:var(--peach);z-index:0;transition:transform .2s ease-out;
+  clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}
+.s1{width:34px;height:34px;top:4%;left:-4%}
+.s2{width:34px;height:34px;bottom:28%;left:-22%}
+.s3{width:74px;height:74px;bottom:8%;left:-14%}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;padding:48px 24px;gap:40px}
+  .hero-photo{justify-self:center;margin-left:0;width:min(360px,90%)}
+  h1{white-space:normal}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+    
 </head>
-
 <body>
+  <section class="hero">
+    <div class="hero-text">
+      <p class="intro">Hi, I’m <strong>Misbah Ahmed</strong> a freelance</p>
+      <h1>
+        <span class="solid">UI/UX Designer</span>
+        <span class="outline">&amp; front-End Developer</span>
+      </h1>
+      <div class="buttons">
+        <a href="#contact" class="btn btn-dark">Start a project</a>
+        <a href="#work" class="btn btn-light">See my work</a>
+      </div>
+    </div>
 
-    <!-- HEADER -->
+    <div class="hero-photo">
+      <div class="hatch hatch-top"></div>
+      <div class="hatch hatch-bottom"></div>
+      <div class="star s1" data-depth="10"></div>
+      <div class="star s2" data-depth="16"></div>
+      <div class="star s3" data-depth="22"></div>
+      <div class="blob">
+        <!-- Replace profile.svg with your own photo, e.g. profile.jpg -->
+        <img src="profile.svg" alt="Portrait of Misbah Ahmed">
+      </div>
+    </div>
+  </section>
 
-    <header class="header">
+  <script src="script.js">
 
-        <a href="index.html" class="logo">
-            Mukta Design
-        </a>
+// Subtle mouse-move parallax on the small stars (skipped if user prefers reduced motion)
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const stars = document.querySelectorAll(".star");
 
-        <nav class="navigation">
-
-            <a href="index.html">Home</a>
-
-            <a href="demo-store.html">
-                Demo Store
-            </a>
-
-            <a href="source-code.html">
-                Source Code
-            </a>
-
-            <a href="contact.html">
-                Contact
-            </a>
-
-        </nav>
-
-    </header>
-
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <h1>
-            Shopify Store Design
-            <span class="highlight">Made Simple</span>
-        </h1>
-
-        <p>
-            Practical Shopify store design tips, tricks, demos,
-            and ready-to-use source code for Shopify developers
-            and store owners.
-        </p>
-
-        <a href="source-code.html" class="button">
-            Explore Source Code
-        </a>
-
-    </section>
-
-
-    <!-- FEATURES -->
-
-    <section class="features">
-
-        <div class="feature-card">
-
-            <h3>Demo Store</h3>
-
-            <p>
-                Explore live examples of Shopify store
-                design features and customizations.
-            </p>
-
-        </div>
-
-
-        <div class="feature-card">
-
-            <h3>Source Code</h3>
-
-            <p>
-                Get the HTML, CSS, JavaScript and
-                Shopify Liquid code from my tutorials.
-            </p>
-
-        </div>
-
-
-        <div class="feature-card">
-
-            <h3>Shopify Tips</h3>
-
-            <p>
-                Learn practical tips and techniques
-                to improve your Shopify store.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <p>
-            © 2026 Mukta Design. All rights reserved.
-        </p>
-
-    </footer>
-<script src="js/script.js"></script>
+if (!reduce) {
+  window.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 2;
+    const y = (e.clientY / window.innerHeight - 0.5) * 2;
+    stars.forEach((star) => {
+      const d = Number(star.dataset.depth) || 10;
+      star.style.transform = `translate(${x * d}px, ${y * d}px) rotate(${x * 12}deg)`;
+    });
+  });
+}
+      
+  </script>
 </body>
 </html>
