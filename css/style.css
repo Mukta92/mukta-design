@@ -440,6 +440,46 @@ body {
     color: var(--teal);
 }
 
+/* ---------- CARD IMAGE ---------- */
+
+.card-image {
+    display: block;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: var(--cream);
+}
+
+/* ---------- GET CODE BUTTON ---------- */
+
+.get-code-btn {
+    display: block;
+    text-align: center;
+    background: var(--teal);
+    color: var(--white);
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.code-card-link:hover .get-code-btn {
+    background: var(--cream);
+    color: var(--teal);
+}
+
+.grid-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--teal);
+}
+
+
+
+
 /* =========================================================
    12. CODE DETAIL PAGE
    ========================================================= */
