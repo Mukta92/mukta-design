@@ -53,6 +53,59 @@ h1{font-family:"Lexend",sans-serif;font-weight:800;line-height:1.05;white-space:
 .s2{width:34px;height:34px;bottom:28%;left:-22%}
 .s3{width:74px;height:74px;bottom:8%;left:-14%}
 
+
+.header {
+    background: var(--teal);
+    padding: 10px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+}
+
+
+/* =========================================================
+   5. LOGO
+   ========================================================= */
+
+.logo {
+    color: var(--white);
+
+    text-decoration: none;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   6. NAVIGATION
+   ========================================================= */
+
+.navigation {
+    display: flex;
+    gap: 30px;
+}
+
+.navigation a {
+    color: var(--white);
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    transition: 0.2s;
+}
+
+.navigation a:hover {
+    color: var(--cream);
+}
+
+
+
+    
 @media (max-width:900px){
   .hero{grid-template-columns:1fr;padding:48px 24px;gap:40px}
   .hero-photo{justify-self:center;margin-left:0;width:min(360px,90%)}
