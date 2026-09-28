@@ -182,8 +182,8 @@ async function publishCard() {
     try {
         const id = "c" + Date.now().toString(36);
         const imagePath = `images/${id}.${ext}`;
-        const snippetPath = `snippets/${id}.txt`;
-
+const snippetPath = `snippets/${id}.txt`;
+        
         await putFile(token, imagePath, await fileToBase64(file), `Add image: ${title}`);
         await putFile(token, snippetPath, textToBase64(code), `Add snippet: ${title}`);
 
