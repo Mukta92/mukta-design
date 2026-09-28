@@ -6,17 +6,30 @@
 <title>Misbah Ahmed | UI/UX Designer & Front-End Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-    :root{ --bg:#f2f2f2; --ink:#0d0d0d; --orange:#f0b064; --peach:#f7e3cf; }
+:root{ --bg:#f2f2f2; --ink:#0d0d0d; --orange:#f0b064; --peach:#f7e3cf; --line:#dcdcdc; --header-h:72px; }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;overflow-x:hidden}
 
+/* ---------- HEADER ---------- */
+.header{
+  height:var(--header-h);padding:0 6vw;width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg);border-bottom:1px solid var(--line);
+}
+.logo{color:var(--ink);text-decoration:none;font-family:"Lexend",sans-serif;font-weight:800;font-size:1.4rem}
+.navigation{display:flex;gap:32px}
+.navigation a{color:var(--ink);text-decoration:none;font-size:.95rem;font-weight:500;opacity:.65;transition:opacity .2s}
+.navigation a:hover,.navigation a:focus-visible{opacity:1}
+.navigation a:focus-visible,.logo:focus-visible{outline:3px solid var(--orange);outline-offset:4px;border-radius:3px}
+
+/* ---------- HERO ---------- */
 .hero{
-  min-height:100vh;display:grid;grid-template-columns:1.15fr 1fr;align-items:center;
-  padding:60px 6vw 60px 10vw;max-width:1500px;margin:0 auto;
+  min-height:calc(100vh - var(--header-h));
+  display:grid;grid-template-columns:1.15fr 1fr;align-items:center;
+  padding:50px 6vw 50px 10vw;max-width:1500px;margin:0 auto;
 }
 .hero-text{position:relative;z-index:3}
 .intro{font-size:1.15rem;margin-bottom:10px}
@@ -53,85 +66,35 @@ h1{font-family:"Lexend",sans-serif;font-weight:800;line-height:1.05;white-space:
 .s2{width:34px;height:34px;bottom:28%;left:-22%}
 .s3{width:74px;height:74px;bottom:8%;left:-14%}
 
-
-.header {
-    background: var(--teal);
-    padding: 10px 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-
-}
-
-
-/* =========================================================
-   5. LOGO
-   ========================================================= */
-
-.logo {
-    color: var(--white);
-
-    text-decoration: none;
-
-    font-size: 24px;
-    font-weight: 700;
-}
-
-
-/* =========================================================
-   6. NAVIGATION
-   ========================================================= */
-
-.navigation {
-    display: flex;
-    gap: 30px;
-}
-
-.navigation a {
-    color: var(--white);
-
-    text-decoration: none;
-
-    font-size: 16px;
-    font-weight: 500;
-
-    transition: 0.2s;
-}
-
-.navigation a:hover {
-    color: var(--cream);
-}
-
-
-
-    
+/* ---------- RESPONSIVE ---------- */
 @media (max-width:900px){
+  .header{padding:0 24px}
+  .navigation{gap:18px}
   .hero{grid-template-columns:1fr;padding:48px 24px;gap:40px}
   .hero-photo{justify-self:center;margin-left:0;width:min(360px,90%)}
   h1{white-space:normal}
 }
+@media (max-width:520px){
+  .navigation a{font-size:.85rem}
+  .navigation{gap:12px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-    
 </head>
 <body>
 
-    <!--------- HEADER --------->
-    <header class="header">
-        <a href="index.html" class="logo"> Mukta Design </a>
-        <nav class="navigation">
-            <a href="index.html">Home</a>
-            <a href="demo-store.html"> Demo Store </a>
-            <a href="source-code.html"> Source Code </a>
-            <a href="contact.html"> Contact </a>
-        </nav>
-    </header>
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="logo">Mukta Design</a>
+    <nav class="navigation">
+      <a href="index.html">Home</a>
+      <a href="demo-store.html">Demo Store</a>
+      <a href="source-code.html">Source Code</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-
-
-
-    
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-text">
       <p class="intro">Hi, I’m <strong>Misbah Ahmed</strong> a freelance</p>
@@ -158,23 +121,22 @@ h1{font-family:"Lexend",sans-serif;font-weight:800;line-height:1.05;white-space:
     </div>
   </section>
 
-  <script src="script.js">
+  <!-- No src attribute here, so the inline code below runs -->
+  <script>
+    // Subtle mouse-move parallax on the small stars (skipped if user prefers reduced motion)
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const stars = document.querySelectorAll(".star");
 
-// Subtle mouse-move parallax on the small stars (skipped if user prefers reduced motion)
-const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const stars = document.querySelectorAll(".star");
-
-if (!reduce) {
-  window.addEventListener("mousemove", (e) => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 2;
-    const y = (e.clientY / window.innerHeight - 0.5) * 2;
-    stars.forEach((star) => {
-      const d = Number(star.dataset.depth) || 10;
-      star.style.transform = `translate(${x * d}px, ${y * d}px) rotate(${x * 12}deg)`;
-    });
-  });
-}
-      
+    if (!reduce) {
+      window.addEventListener("mousemove", (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+        stars.forEach((star) => {
+          const d = Number(star.dataset.depth) || 10;
+          star.style.transform = `translate(${x * d}px, ${y * d}px) rotate(${x * 12}deg)`;
+        });
+      });
+    }
   </script>
 </body>
 </html>
