@@ -49,24 +49,29 @@ body {
 /* =========================================================
    4. HEADER
    ========================================================= */
+
 .announcement {
-  background: darkred;;
-  text-align: center;
-  padding: 10px 16px;
-}
-.announcement a {
+  display: block;
+  width: 100%;
+  background: #02343F;
   color: #F0EDCC;
-  font-size: 20px;
+  text-align: center;
+  padding: 12px 16px;
+  font-size: 19px;
   font-weight: 600;
   text-decoration: none;
+  transition: background-color .2s ease, color .2s ease;
 }
-.announcement a:hover {
-  text-decoration: underline;
+.announcement:hover {
+  background: #F0EDCC;
+  color: #02343F;
 }
-.announcement a:focus-visible {
+.announcement:focus-visible {
   outline: 2px solid #F0EDCC;
-  outline-offset: 3px;
+  outline-offset: -4px;
 }
+
+
 
 .header {
     background: var(--teal);
