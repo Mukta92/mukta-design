@@ -327,10 +327,16 @@ body {
 }
 
 @media (max-width: 480px) {
+    .source-code-container {
+        padding: 10px;
+    }
+
     .code-card {
-        aspect-ratio: auto;
+        height: auto;
+        min-height: 350px;
     }
 }
+
 
 .code-card h2 {
     margin-bottom: 10px;
