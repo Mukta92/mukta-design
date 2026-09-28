@@ -159,7 +159,6 @@ body {
 
 .hero p {
     max-width: 650px;
-    margin: 0 auto 30px;
     font-size: 18px;
     line-height: 1.7;
     color: var(--teal);
