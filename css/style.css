@@ -50,18 +50,30 @@ body {
    4. HEADER
    ========================================================= */
 
-.announcement { background: #02343F; transition: background-color .2s ease; }
+.announcement {
+  background: #02343F;
+  transition: background-color .2s ease;
+}
 .announcement a {
-  display: block;
+  display: block;            /* link fills the whole div */
   padding: 12px 16px;
   text-align: center;
   color: #F0EDCC;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: background-color .2s ease, color .2s ease;
+  transition: color .2s ease;
 }
-.announcement a:hover { background: #F0EDCC; color: #02343F; }
+.announcement:hover {
+  background: #F0EDCC;       /* hover colour change on the whole div */
+}
+.announcement:hover a {
+  color: #02343F;
+}
+.announcement a:focus-visible {
+  outline: 2px solid #F0EDCC;
+  outline-offset: -4px;
+}
 
 
 .header {
