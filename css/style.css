@@ -573,6 +573,11 @@ body {
   margin-top: 10px;
 }
 
+
+section.contact-section {
+    margin: 15px 50px;
+}
+
 .contact-container {
   display: flex;
   gap: 40px;
