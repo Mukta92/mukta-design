@@ -1,19 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Source Code Detail | Mukta Design</title>
-<link rel="stylesheet" href="css/style.css">
-    
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
-
-    
 <body>
 
     <!--------- HEADER --------->
@@ -40,61 +32,87 @@
     </main>
 
     <script>
-
-    function copyCode(id) {
-        const code = document.getElementById(id).innerText;
-        navigator.clipboard.writeText(code);
-        alert("Code copied!");
+    function showMessage(text) {
+        const container = document.getElementById('detailContent');
+        container.textContent = '';
+        const p = document.createElement('p');
+        p.textContent = text;
+        container.appendChild(p);
     }
 
     async function loadCard() {
-
         const params = new URLSearchParams(window.location.search);
-        const cardId = params.get('id');
-        const container = document.getElementById('detailContent');
+        const cardId = params.get('id') || '';
 
-        if (!cardId) {
-            container.innerHTML = "<p>No card specified.</p>";
+        if (!/^[a-z0-9-]+$/.test(cardId)) {
+            showMessage('No card specified.');
             return;
         }
 
         try {
-            const res = await fetch('source-code.html');
-            const html = await res.text();
+            const res = await fetch('cards.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('cards.json failed');
+            const cards = await res.json();
 
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-
-            const pre = doc.getElementById(cardId);
-
-            if (!pre) {
-                container.innerHTML = "<p>Card not found.</p>";
+            const card = cards.find(function (c) { return c.id === cardId; });
+            if (!card || typeof card.snippet !== 'string' || card.snippet.indexOf('snippets/') !== 0) {
+                showMessage('Card not found.');
                 return;
             }
 
-            const card = pre.closest('.code-card');
-            const title = card.querySelector('h2') ? card.querySelector('h2').innerHTML : '';
-            const desc = card.querySelector('p') ? card.querySelector('p').innerHTML : '';
-            const codeText = pre.innerHTML;
+            const codeRes = await fetch(card.snippet, { cache: 'no-store' });
+            if (!codeRes.ok) throw new Error('snippet failed');
+            const codeText = await codeRes.text();
 
-            document.title = (card.querySelector('h2') ? card.querySelector('h2').textContent.trim() : 'Source Code') + " | Mukta Design";
+            const title = card.title || 'Source Code';
+            document.title = title + ' | Mukta Design';
 
-container.innerHTML =
-    '<h1>' + title + '</h1>' +
-    '<p class="detail-desc">' + desc + '</p>' +
-    '<pre id="' + cardId + '" class="detail-pre">' + codeText + '</pre>' +
-        '<button class="copy-btn" onclick="copyCode(\'' + cardId + '\')">Copy Code</button>' +
-        '<a href="source-code.html" class="db-back-button">&larr; Back to Source Code</a>'
+            const container = document.getElementById('detailContent');
+            container.textContent = '';
+
+            const h1 = document.createElement('h1');
+            h1.textContent = title;
+
+            const pre = document.createElement('pre');
+            pre.className = 'detail-pre';
+            pre.textContent = codeText;
+
+            const group = document.createElement('div');
+            group.className = 'button-group';
+
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.type = 'button';
+            copyBtn.textContent = 'Copy Code';
+            copyBtn.addEventListener('click', async function () {
+                try {
+                    await navigator.clipboard.writeText(codeText);
+                    copyBtn.textContent = 'Copied!';
+                } catch (e) {
+                    copyBtn.textContent = 'Copy failed';
+                }
+                setTimeout(function () { copyBtn.textContent = 'Copy Code'; }, 1500);
+            });
+
+            const back = document.createElement('a');
+            back.className = 'db-back-button';
+            back.href = 'source-code.html';
+            back.innerHTML = '&larr; Back to Source Code';
+
+            group.appendChild(copyBtn);
+            group.appendChild(back);
+
+            container.appendChild(h1);
+            container.appendChild(pre);
+            container.appendChild(group);
 
         } catch (err) {
-            container.innerHTML = "<p>Could not load this card. Please try again.</p>";
+            showMessage('Could not load this card. Please try again.');
         }
     }
 
     loadCard();
-
     </script>
 
 </body>
-
 </html>
