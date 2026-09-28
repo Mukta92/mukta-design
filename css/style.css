@@ -162,13 +162,6 @@ body {
     color: var(--teal);
 }
 
-.hero .highlight {
-    color: var(--cream);
-
-    background: var(--teal);
-
-    padding: 0 8px;
-}
 
 .hero p {
     max-width: 650px;
@@ -252,14 +245,6 @@ body {
     color: var(--teal);
 }
 
-.demo-store-container .highlight {
-    color: var(--cream);
-
-    background: var(--teal);
-
-    padding: 0 8px;
-}
-
 .demo-store-container p {
     color: var(--teal);
 
@@ -289,12 +274,6 @@ body {
     font-size: 45px;
     margin-bottom: 40px;
     color: var(--teal);
-}
-
-.source-code-container .highlight {
-    color: var(--cream);
-    background: var(--teal);
-    padding: 0 8px;
 }
 
 
