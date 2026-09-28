@@ -1,5 +1,11 @@
 [
   {
+    "id": "cmulemwh2",
+    "title": "This Is new",
+    "image": "images/cmulemwh2.jpg",
+    "snippet": "snippets/cmulemwh2.txt"
+  },
+  {
     "id": "cmuldseku",
     "title": "Mukta 3 is the snippet code",
     "image": "images/cmuldseku.png",
