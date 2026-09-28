@@ -50,7 +50,6 @@
     transition: color .15s ease, border-color .15s ease;
   }
   .navigation a:hover,
-  .navigation a[aria-current="page"] { color: var(--teal); border-bottom-color: var(--teal); }
   .logo:focus-visible, .navigation a:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 2px; }
 
   .hero {
@@ -128,6 +127,16 @@
     background: var(--sky);
   }
 
+.navigation a {
+  border-bottom: 2px solid transparent;
+  padding: 6px 0;
+}
+.navigation a:hover,
+.navigation a[aria-current="page"] {
+  border-bottom-color: #02343F;
+}
+
+  
   @media (max-width: 860px) {
     .hero { grid-template-columns: 1fr; padding-top: 32px; text-align: left; }
     .actions { margin-top: 40px; }
@@ -196,6 +205,14 @@
       if (!r.ok) throw new Error();
     } catch (_) { /* opened via file:// or file missing; let the browser handle it */ }
   });
+
+const current = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.navigation a').forEach(link => {
+    const target = link.getAttribute('href').split('/').pop();
+    if (target === current) link.setAttribute('aria-current', 'page');
+  });
+
+  
 </script>
 </body>
 </html>
