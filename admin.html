@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>Admin - Publish Card</title>
 <style>
     body {
@@ -36,6 +37,7 @@
         cursor: pointer;
     }
     button:hover { opacity: 0.9; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
     #status {
         margin-top: 20px;
         padding: 12px;
@@ -52,15 +54,22 @@
 <body>
 
 <h1>Publish Source Code Card</h1>
+
 <label for="token">GitHub Token</label>
-<input type="password" id="token" placeholder="github_pat_...">
-<small>Used only for this publishing session.</small>
+<input type="password" id="token" placeholder="github_pat_..." autocomplete="off">
+<small>Used only for this session. Never saved.</small>
+
 <label for="title">Card Title</label>
 <input type="text" id="title" placeholder="e.g. Trustpilot Rating Badge">
+
+<label for="image">Card Image (jpg, png or webp, max 2 MB)</label>
+<input type="file" id="image" accept="image/jpeg,image/png,image/webp">
+
 <label for="code">Source Code</label>
 <textarea id="code" placeholder="Paste your raw HTML/CSS/JS code here"></textarea>
-<button type="button" onclick="publishCard()">Publish Card</button>
-    
+
+<button type="button" id="publishBtn" onclick="publishCard()">Publish Card</button>
+
 <div id="status"></div>
 
 <script>
@@ -68,19 +77,9 @@
 const OWNER = "mukta92";
 const REPO = "mukta-design";
 const BRANCH = "main";
-const FILE_PATH = "source-code.html";
-
-function escapeHTML(str) {
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-function utf8ToBase64(str) {
-    return btoa(unescape(encodeURIComponent(str)));
-}
-
-function base64ToUtf8(str) {
-    return decodeURIComponent(escape(atob(str)));
-}
+const CARDS_FILE = "cards.json";
+const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
+const IMAGE_TYPES = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
 
 function setStatus(msg, type) {
     const el = document.getElementById('status');
@@ -88,96 +87,132 @@ function setStatus(msg, type) {
     el.className = type;
 }
 
+function bytesToBase64(bytes) {
+    let binary = "";
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(binary);
+}
+
+function textToBase64(str) {
+    return bytesToBase64(new TextEncoder().encode(str));
+}
+
+function base64ToText(b64) {
+    const binary = atob(b64.replace(/\n/g, ""));
+    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+}
+
+async function fileToBase64(file) {
+    const buffer = await file.arrayBuffer();
+    return bytesToBase64(new Uint8Array(buffer));
+}
+
+function apiUrl(path) {
+    return `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`;
+}
+
+function authHeaders(token) {
+    return {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json"
+    };
+}
+
+async function putFile(token, path, contentB64, message, sha) {
+    const body = { message: message, content: contentB64, branch: BRANCH };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(apiUrl(path), {
+        method: "PUT",
+        headers: Object.assign({ "Content-Type": "application/json" }, authHeaders(token)),
+        body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+        let msg = "Failed to upload " + path;
+        try { msg = (await res.json()).message || msg; } catch (e) {}
+        throw new Error(msg);
+    }
+}
+
+async function readCards(token) {
+    const res = await fetch(apiUrl(CARDS_FILE) + "?ref=" + BRANCH, {
+        headers: authHeaders(token),
+        cache: "no-store"
+    });
+
+    if (res.status === 404) return { cards: [], sha: null };
+    if (!res.ok) throw new Error("Could not read cards.json. Check your token and repo details.");
+
+    const data = await res.json();
+    const parsed = JSON.parse(base64ToText(data.content) || "[]");
+    if (!Array.isArray(parsed)) throw new Error("cards.json must contain a list.");
+    return { cards: parsed, sha: data.sha };
+}
+
 async function publishCard() {
     const token = document.getElementById('token').value.trim();
     const title = document.getElementById('title').value.trim();
     const code = document.getElementById('code').value.trim();
+    const file = document.getElementById('image').files[0];
+    const btn = document.getElementById('publishBtn');
 
-if (!token || !title || !code) {
-    setStatus("Please fill in Token, Title, and Code.", "error");
-    return;
-}
+    if (!token || !title || !code || !file) {
+        setStatus("Please fill in Token, Title, Image and Code.", "error");
+        return;
+    }
 
+    const ext = IMAGE_TYPES[file.type];
+    if (!ext) {
+        setStatus("Image must be jpg, png or webp.", "error");
+        return;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+        setStatus("Image is too large. Maximum is 2 MB.", "error");
+        return;
+    }
+
+    btn.disabled = true;
     setStatus("Publishing... please wait.", "loading");
 
     try {
-        const getRes = await fetch(
-            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}?ref=${BRANCH}`,
-            { headers: { Authorization: `token ${token}` } }
+        const id = "c" + Date.now().toString(36);
+        const imagePath = `images/${id}.${ext}`;
+        const snippetPath = `snippets/${id}.txt`;
+
+        await putFile(token, imagePath, await fileToBase64(file), `Add image: ${title}`);
+        await putFile(token, snippetPath, textToBase64(code), `Add snippet: ${title}`);
+
+        // Read cards.json last so nothing is overwritten by an older copy
+        const current = await readCards(token);
+        current.cards.unshift({
+            id: id,
+            title: title,
+            image: imagePath,
+            snippet: snippetPath
+        });
+
+        await putFile(
+            token,
+            CARDS_FILE,
+            textToBase64(JSON.stringify(current.cards, null, 2) + "\n"),
+            `Add card: ${title}`,
+            current.sha
         );
 
-        if (!getRes.ok) {
-            throw new Error("Could not fetch file. Check your token and repo details.");
-        }
-
-        const fileData = await getRes.json();
-        const currentContent = base64ToUtf8(fileData.content.replace(/\n/g, ""));
-        const sha = fileData.sha;
-
-        const matches = [...currentContent.matchAll(/id="code(\d+)"/g)];
-        const maxId = matches.length ? Math.max(...matches.map(m => parseInt(m[1]))) : 0;
-        const nextId = maxId + 1;
-        const idStr = "code" + nextId;
-
-        const newCard =
-`                <!-- CARD ${nextId} -->
-                <a href="code-detail.html?id=${idStr}" class="code-card-link">
-                <div class="code-card">
-
-                    <h2>
-                        ${title}
-                    </h2>
-
-                    <pre id="${idStr}">${escapeHTML(code)}</pre>
-
-                    <div class="card-actions">
-                        <button onclick="event.preventDefault(); copyCode('${idStr}')">
-                            Copy Code
-                        </button>
-                        <span class="view-link">Full View &rarr;</span>
-                    </div>
-
-                </div>
-                </a>
-
-`;
-
-        const marker = "<!-- CARDS_END -->";
-        if (!currentContent.includes(marker)) {
-            throw new Error(`Marker "${marker}" not found in source-code.html. Please add it before .code-grid closes.`);
-        }
-
-        const updatedContent = currentContent.replace(marker, newCard + marker);
-
-        const putRes = await fetch(
-            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`,
-            {
-                method: "PUT",
-                headers: {
-                    Authorization: `token ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    message: `Add card: ${title}`,
-                    content: utf8ToBase64(updatedContent),
-                    sha: sha,
-                    branch: BRANCH
-                })
-            }
-        );
-
-        if (!putRes.ok) {
-            const errData = await putRes.json();
-            throw new Error(errData.message || "Failed to publish.");
-        }
-
-        setStatus(`Published as ${idStr}! Live in ~30-60 seconds.`, "success");
-
+        setStatus(`Published as ${id}! Live in about 30-60 seconds.`, "success");
         document.getElementById('title').value = '';
         document.getElementById('code').value = '';
+        document.getElementById('image').value = '';
 
     } catch (err) {
         setStatus("Error: " + err.message, "error");
+    } finally {
+        btn.disabled = false;
     }
 }
 
