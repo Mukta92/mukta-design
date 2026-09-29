@@ -50,8 +50,19 @@ body {
    4. HEADER
    ========================================================= */
 
+/*
+  ADD THIS to the bottom of css/style.css.
+  Delete any old .announcement rules first, especially the old shimmer ones
+  (background-clip: text, -webkit-text-fill-color: transparent, @keyframes shine).
+
+  Effects included: moving gradient background + wave letters + spinning icon.
+*/
+
+/* Moving gradient background */
 .announcement {
-  background: darkred;
+  background: linear-gradient(90deg, #7f1d1d, #1e3a8a, #065f46, #7f1d1d);
+  background-size: 300% 100%;
+  animation: bgmove 8s linear infinite;
 }
 
 @keyframes bgmove {
@@ -71,10 +82,17 @@ body {
   text-decoration: none;
 }
 
+/* Spinning icon */
 .announcement .yt-icon {
   width: 26px;
   height: 26px;
   flex: none;
+  animation: spin 3s ease-in-out infinite;
+}
+
+@keyframes spin {
+  0%       { transform: rotateY(0); }
+  40%,100% { transform: rotateY(360deg); }
 }
 
 /* Wave letters */
@@ -103,6 +121,7 @@ body {
 /* Respect "reduce motion" device settings */
 @media (prefers-reduced-motion: reduce) {
   .announcement,
+  .announcement .yt-icon,
   .announcement .w span {
     animation: none;
   }
