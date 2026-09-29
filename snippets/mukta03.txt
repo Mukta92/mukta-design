@@ -1,0 +1,18 @@
+/* Logo */
+
+.ptb-logo {
+  color: #00b67a;
+  font-size: 20px;
+  line-height: 1;
+}
+
+
+/* Mobile */
+
+@media screen and (max-width: 600px) {
+
+  .ptb-trustpilot {
+    gap: 6px;
+    padding: 5px 7px;
+    border-radius: 10px;
+  }
