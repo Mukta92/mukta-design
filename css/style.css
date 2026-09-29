@@ -486,8 +486,8 @@ svg.yt-icon {
 .card-image {
     display: block;
     width: 100%;
-    flex: 1;
-    min-height: 0;
+    aspect-ratio: 16 / 9;
+    height: auto;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 15px;
