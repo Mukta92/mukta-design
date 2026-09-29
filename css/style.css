@@ -50,6 +50,11 @@ body {
    4. HEADER
    ========================================================= */
 
+svg.yt-icon {
+  width: 20px;
+  height: 30px;
+  flex: none;
+}
 
 .header {
     background: var(--teal);
