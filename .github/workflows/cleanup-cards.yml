@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Clean cards.json
+      - name: Clean cards.json and delete related images
         run: |
           python - <<'PY'
           import json
@@ -34,6 +34,7 @@ jobs:
           with open(cards_file, "r", encoding="utf-8") as f:
               cards = json.load(f)
 
+          # Find files deleted in the latest commit
           result = subprocess.run(
               ["git", "diff", "--name-status", "HEAD^", "HEAD"],
               capture_output=True,
@@ -52,36 +53,78 @@ jobs:
               print("No deleted files found.")
               exit(0)
 
+          print("Deleted files:")
+          for file in deleted_files:
+              print(" -", file)
+
           original_count = len(cards)
 
-          cards = [
-              card for card in cards
-              if card.get("snippet") not in deleted_files
-          ]
+          remaining_cards = []
+          deleted_images = []
 
-          if len(cards) == original_count:
+          for card in cards:
+
+              snippet = card.get("snippet")
+              image = card.get("image")
+
+              # Check whether this card's snippet was deleted
+              if snippet in deleted_files:
+
+                  # Remember the related image
+                  if image:
+                      deleted_images.append(image)
+
+                  print("Removing card:", card.get("title", card.get("id")))
+
+              else:
+                  remaining_cards.append(card)
+
+          # If nothing changed, stop
+          if len(remaining_cards) == original_count:
               print("No matching cards found.")
               exit(0)
 
+          # Save cleaned cards.json
           with open(cards_file, "w", encoding="utf-8") as f:
-              json.dump(cards, f, indent=2)
+              json.dump(remaining_cards, f, indent=2)
               f.write("\n")
 
+          # Delete related images
+          for image in deleted_images:
+
+              image_path = Path(image)
+
+              if image_path.exists():
+
+                  image_path.unlink()
+
+                  print("Deleted image:", image)
+
+              else:
+
+                  print("Image not found:", image)
+
           print(
-              f"Removed {original_count - len(cards)} card(s) from cards.json."
+              f"Removed {original_count - len(remaining_cards)} card(s)."
           )
+
+          print(
+              f"Removed {len(deleted_images)} related image(s)."
+          )
+
           PY
 
-      - name: Commit changes
+      - name: Commit cleanup
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add cards.json
+          git add images
 
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No cleanup changes to commit."
           else
-            git commit -m "Automatically clean deleted cards"
+            git commit -m "Automatically clean deleted cards and images"
             git push
           fi
