@@ -72,11 +72,19 @@ async function loadCards() {
                 const box = document.createElement('div');
                 box.className = 'code-card';
 
-                const img = document.createElement('img');
-                img.className = 'card-image';
-                img.src = 'images/' + id + '.png';
-                img.alt = id;
-                img.loading = 'lazy';
+           const img = document.createElement('img');
+img.className = 'card-image';
+img.src = 'images/' + id + '.png';
+img.alt = id;
+img.loading = 'lazy';
+
+img.onerror = function () {
+    this.onerror = function () {
+        this.onerror = null;
+        this.src = 'images/' + id + '.webp';
+    };
+    this.src = 'images/' + id + '.jpg';
+};
 
                 const btn = document.createElement('span');
                 btn.className = 'get-code-btn';
