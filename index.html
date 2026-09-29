@@ -184,36 +184,6 @@
     </div>
   </section>
 
-<script>
-  // If the photo file isn't found, show a simple silhouette so the layout still looks right
-  const photo = document.getElementById('photo');
-  photo.addEventListener('error', () => {
-    const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240"><circle cx="100" cy="80" r="42" fill="#9aa3b2"/><path d="M15 240c0-55 38-90 85-90s85 35 85 90z" fill="#9aa3b2"/></svg>';
-    photo.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
-  }, { once: true });
-
-
-  // Hire Me: scroll to a #contact section ...
-document.getElementById('hireBtn').addEventListener('click', (e) => {
-  ...
-});
-
-// Download CV: warn if the file is missing
-document.getElementById('cvBtn').addEventListener('click', async (e) => {
-  ...
-});
-
-  
-
-const current = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.navigation a').forEach(link => {
-    const target = link.getAttribute('href').split('/').pop();
-    if (target === current) link.setAttribute('aria-current', 'page');
-  });
-
-  
-</script>
-
 <script src="js/script.js"></script>
 
   
