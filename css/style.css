@@ -833,14 +833,50 @@ footer {
 
 }
 
-
+/* =========================================================
+                FOOTER
+   ========================================================= */
 
 .footer {
   background: #02343F;
   color: #F0EDCC;
   text-align: center;
-  padding: 20px 15px;
-  font-size: 14px;
+  padding: 24px 15px;
 }
 
+.footer-yt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #F0EDCC;
+  color: #02343F;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  transition: transform .15s ease;
+}
 
+.footer-yt:hover {
+  transform: translateY(-2px);
+}
+
+.footer-yt svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.footer p {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+@media (max-width: 360px) {
+  .footer-yt {
+    font-size: 13px;
+    padding: 7px 12px;
+  }
+}
