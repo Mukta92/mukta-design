@@ -49,6 +49,48 @@ body {
 /* =========================================================
    4. HEADER
    ========================================================= */
+.announcement {
+  background: linear-gradient(90deg, #7f1d1d, #1e3a8a, #065f46, #7f1d1d);
+  background-size: 300% 100%;
+  animation: bgmove 8s linear infinite;
+}
+@keyframes bgmove { to { background-position: 300% 0; } }
+
+.announcement a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.announcement .yt-icon {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+
+.announcement .w { white-space: pre; }
+.announcement .w span {
+  display: inline-block;
+  animation: wave 1.8s ease-in-out infinite;
+}
+@keyframes wave {
+  0%,40%,100% { transform: translateY(0); }
+  20%         { transform: translateY(-6px); }
+}
+
+@media (max-width: 480px) {
+  .announcement a { font-size: 16px; padding: 10px 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement, .announcement .w span { animation: none; }
+}
 
 svg.yt-icon {
   width: 20px;
