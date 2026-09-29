@@ -70,9 +70,6 @@ body {
   font-weight: 600;
   text-decoration: none;
 }
-.announcement:hover {
-  background-color: #F0EDCC;
-}
 
 /* Spinning icon */
 .announcement .yt-icon {
