@@ -13,7 +13,7 @@
   Array.from(text).forEach(function (ch, i) {
     var s = document.createElement('span');
     s.textContent = ch;
-    s.style.animationDelay = (i * 0.20) + 's';
+    s.style.animationDelay = (i * 0.07) + 's';
     el.appendChild(s);
   });
 })();
