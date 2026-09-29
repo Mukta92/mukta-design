@@ -3,22 +3,6 @@
    Handles the "Get In Touch" form validation & submission
    ====================================================== */
 
-(function () {
-  var el = document.getElementById('wave');
-  if (!el) return;
-
-  var text = el.textContent;
-  el.textContent = '';
-
-  Array.from(text).forEach(function (ch, i) {
-    var s = document.createElement('span');
-    s.textContent = ch;
-    s.style.animationDelay = (i * 0.07) + 's';
-    el.appendChild(s);
-  });
-})();
-
-
 
 
 
