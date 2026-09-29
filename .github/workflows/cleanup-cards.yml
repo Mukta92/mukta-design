@@ -1,0 +1,87 @@
+name: Cleanup Deleted Snippets
+
+on:
+  push:
+    paths:
+      - 'snippets/**'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Clean cards.json
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          cards_file = Path("cards.json")
+
+          if not cards_file.exists():
+              print("cards.json not found.")
+              exit(0)
+
+          with open(cards_file, "r", encoding="utf-8") as f:
+              cards = json.load(f)
+
+          result = subprocess.run(
+              ["git", "diff", "--name-status", "HEAD^", "HEAD"],
+              capture_output=True,
+              text=True
+          )
+
+          deleted_files = []
+
+          for line in result.stdout.splitlines():
+              parts = line.split("\t", 1)
+
+              if len(parts) == 2 and parts[0] == "D":
+                  deleted_files.append(parts[1])
+
+          if not deleted_files:
+              print("No deleted files found.")
+              exit(0)
+
+          original_count = len(cards)
+
+          cards = [
+              card for card in cards
+              if card.get("snippet") not in deleted_files
+          ]
+
+          if len(cards) == original_count:
+              print("No matching cards found.")
+              exit(0)
+
+          with open(cards_file, "w", encoding="utf-8") as f:
+              json.dump(cards, f, indent=2)
+              f.write("\n")
+
+          print(
+              f"Removed {original_count - len(cards)} card(s) from cards.json."
+          )
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add cards.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Automatically clean deleted cards"
+            git push
+          fi
