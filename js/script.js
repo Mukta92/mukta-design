@@ -3,13 +3,6 @@
    Handles the "Get In Touch" form validation & submission
    ====================================================== */
 
-/*
-  ADD THIS to js/script.js.
-  Put it at the very TOP of the file so an error in other code
-  (like the contact form) cannot stop it from running.
-  Remove any older announcement code (addAnnouncement / DOMContentLoaded version).
-*/
-
 (function () {
   var el = document.getElementById('wave');
   if (!el) return;
@@ -20,7 +13,7 @@
   Array.from(text).forEach(function (ch, i) {
     var s = document.createElement('span');
     s.textContent = ch;
-    s.style.animationDelay = (i * 0.07) + 's';
+    s.style.animationDelay = (i * 0.09) + 's';
     el.appendChild(s);
   });
 })();
