@@ -709,11 +709,8 @@ section.contact-section {
 
 footer {
     background: var(--teal);
-
     color: var(--white);
-
     text-align: center;
-
     padding: 30px;
 }
 
@@ -729,9 +726,7 @@ footer {
 
     .header {
         flex-direction: column;
-
         gap: 20px;
-
         padding: 20px;
     }
 
@@ -740,9 +735,7 @@ footer {
 
     .navigation {
         gap: 15px;
-
         flex-wrap: wrap;
-
         justify-content: center;
     }
 
@@ -777,13 +770,11 @@ footer {
 
     .source-code-container {
         margin: 50px auto;
-
         padding: 15px;
     }
 
     .source-code-container h1 {
         font-size: 38px;
-
         margin-bottom: 30px;
     }
 
@@ -793,12 +784,15 @@ footer {
 
 
     /* ---------- CONTACT ---------- */
-
-    .contact-container {
-        margin: 60px auto;
-
-        padding: 15px;
-    }
+.contact-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;}
 
     .contact-container h1 {
         font-size: 38px;
