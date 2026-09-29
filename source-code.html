@@ -40,21 +40,44 @@
 
         </div>
     </main>
-
 <script>
 async function loadCards() {
     const grid = document.getElementById('codeGrid');
 
     try {
-        const res = await fetch('cards.json', {
+
+        // Load cards.json
+        const cardsResponse = await fetch('cards.json', {
             cache: 'no-store'
         });
 
-        if (!res.ok) {
+        if (!cardsResponse.ok) {
             throw new Error('Could not load cards.');
         }
 
-        const cards = await res.json();
+        const cards = await cardsResponse.json();
+
+        // Load current files from GitHub snippets folder
+        const snippetsResponse = await fetch(
+            'https://api.github.com/repos/mukta92/mukta-design/contents/snippets',
+            { cache: 'no-store' }
+        );
+
+        if (!snippetsResponse.ok) {
+            throw new Error('Could not load snippets.');
+        }
+
+        const snippets = await snippetsResponse.json();
+
+        // Create a list of currently existing .txt files
+        const existingSnippets = new Set(
+            snippets
+                .filter(file =>
+                    file.type === 'file' &&
+                    file.name.toLowerCase().endsWith('.txt')
+                )
+                .map(file => 'snippets/' + file.name)
+        );
 
         grid.textContent = '';
 
@@ -66,10 +89,26 @@ async function loadCards() {
             return;
         }
 
-        cards.forEach(function (card) {
+        // Only show cards whose .txt file still exists
+        const activeCards = cards.filter(function (card) {
+            return (
+                card &&
+                card.id &&
+                card.image &&
+                card.snippet &&
+                existingSnippets.has(card.snippet)
+            );
+        });
 
-            if (!card || !card.id) return;
-            if (!card.image) return;
+        if (activeCards.length === 0) {
+            const p = document.createElement('p');
+            p.className = 'grid-message';
+            p.textContent = 'No cards yet.';
+            grid.appendChild(p);
+            return;
+        }
+
+        activeCards.forEach(function (card) {
 
             const link = document.createElement('a');
             link.className = 'code-card-link';
@@ -83,7 +122,6 @@ async function loadCards() {
             const img = document.createElement('img');
             img.className = 'card-image';
 
-            // IMPORTANT:
             // Use the exact image path stored in cards.json
             img.src = card.image;
 
@@ -118,7 +156,6 @@ async function loadCards() {
 
 loadCards();
 </script>
-
 
 <footer class="footer">
   <p>© 2026 Mukta Design. All rights reserved.</p>
