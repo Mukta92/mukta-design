@@ -51,9 +51,7 @@ body {
    ========================================================= */
 
 .announcement {
-  background: linear-gradient(90deg, #7f1d1d, #1e3a8a, #065f46, #7f1d1d);
-  background-size: 300% 100%;
-  animation: bgmove 8s linear infinite;
+  background: darkred;
 }
 
 @keyframes bgmove {
