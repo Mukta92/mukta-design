@@ -70,6 +70,9 @@ body {
   font-weight: 600;
   text-decoration: none;
 }
+.announcement:hover {
+  background-color: #F0EDCC;
+}
 
 /* Spinning icon */
 .announcement .yt-icon {
@@ -84,15 +87,6 @@ body {
   40%,100% { transform: rotateY(360deg); }
 }
 
-/* Wave letters */
-.announcement .w {
-  white-space: pre;
-}
-
-.announcement .w span {
-  display: inline-block;
-  animation: wave 1.8s ease-in-out infinite;
-}
 
 @keyframes wave {
   0%, 40%, 100% { transform: translateY(0); }
