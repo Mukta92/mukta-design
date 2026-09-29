@@ -41,70 +41,83 @@
         </div>
     </main>
 
-    <script>
+<script>
 async function loadCards() {
     const grid = document.getElementById('codeGrid');
 
     try {
-        const response = await fetch(
-            'https://api.github.com/repos/Mukta92/mukta-design/contents/snippets',
-            { cache: 'no-store' }
-        );
+        const res = await fetch('cards.json', {
+            cache: 'no-store'
+        });
 
-        if (!response.ok) {
-            throw new Error('Could not load snippets');
+        if (!res.ok) {
+            throw new Error('Could not load cards.');
         }
 
-        const files = await response.json();
+        const cards = await res.json();
 
-        grid.innerHTML = '';
+        grid.textContent = '';
 
-        files
-            .filter(file => file.type === 'file' && file.name.endsWith('.txt'))
-            .forEach(file => {
+        if (!Array.isArray(cards) || cards.length === 0) {
+            const p = document.createElement('p');
+            p.className = 'grid-message';
+            p.textContent = 'No cards yet.';
+            grid.appendChild(p);
+            return;
+        }
 
-                const id = file.name.replace('.txt', '');
+        cards.forEach(function (card) {
 
-                const link = document.createElement('a');
-                link.className = 'code-card-link';
-                link.href = 'code-detail.html?id=' + encodeURIComponent(id);
+            if (!card || !card.id) return;
+            if (!card.image) return;
 
-                const box = document.createElement('div');
-                box.className = 'code-card';
+            const link = document.createElement('a');
+            link.className = 'code-card-link';
+            link.href =
+                'code-detail.html?id=' +
+                encodeURIComponent(card.id);
 
-           const img = document.createElement('img');
-img.className = 'card-image';
-img.src = 'images/' + id + '.png';
-img.alt = id;
-img.loading = 'lazy';
+            const box = document.createElement('div');
+            box.className = 'code-card';
 
-img.onerror = function () {
-    this.onerror = function () {
-        this.onerror = null;
-        this.src = 'images/' + id + '.webp';
-    };
-    this.src = 'images/' + id + '.jpg';
-};
+            const img = document.createElement('img');
+            img.className = 'card-image';
 
-                const btn = document.createElement('span');
-                btn.className = 'get-code-btn';
-                btn.textContent = 'Get Code';
+            // IMPORTANT:
+            // Use the exact image path stored in cards.json
+            img.src = card.image;
 
-                box.appendChild(img);
-                box.appendChild(btn);
-                link.appendChild(box);
-                grid.appendChild(link);
-            });
+            img.alt = card.title || 'Source code preview';
+            img.loading = 'lazy';
 
-    } catch (error) {
-        console.error(error);
-        grid.innerHTML = '<p class="grid-message">Could not load cards.</p>';
+            const btn = document.createElement('span');
+            btn.className = 'get-code-btn';
+            btn.textContent = 'Get Code';
+
+            box.appendChild(img);
+            box.appendChild(btn);
+
+            link.appendChild(box);
+            grid.appendChild(link);
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        grid.textContent = '';
+
+        const p = document.createElement('p');
+        p.className = 'grid-message';
+        p.textContent =
+            'Could not load cards. Please try again.';
+
+        grid.appendChild(p);
     }
 }
 
 loadCards();
-        
-    </script>
+</script>
 
 
 <footer class="footer">
