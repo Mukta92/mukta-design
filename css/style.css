@@ -78,10 +78,6 @@ svg.yt-icon {
 .announcement:hover a {
   color: #02343F;
 }
-.announcement a:focus-visible {
-  outline: 2px solid #F0EDCC;
-  outline-offset: -4px;
-}
 
 
 .header {
