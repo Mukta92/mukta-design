@@ -50,19 +50,8 @@ body {
    4. HEADER
    ========================================================= */
 
-/*
-  ADD THIS to the bottom of css/style.css.
-  Delete any old .announcement rules first, especially the old shimmer ones
-  (background-clip: text, -webkit-text-fill-color: transparent, @keyframes shine).
-
-  Effects included: moving gradient background + wave letters + spinning icon.
-*/
-
-/* Moving gradient background */
 .announcement {
-  background: linear-gradient(90deg, #7f1d1d, #1e3a8a, #065f46, #7f1d1d);
-  background-size: 300% 100%;
-  animation: bgmove 8s linear infinite;
+    background: darkred;
 }
 
 @keyframes bgmove {
