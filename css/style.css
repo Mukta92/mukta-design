@@ -852,3 +852,15 @@ footer {
     }
 
 }
+
+
+
+.footer {
+  background: #02343F;
+  color: #F0EDCC;
+  text-align: center;
+  padding: 20px 15px;
+  font-size: 14px;
+}
+
+
