@@ -102,6 +102,7 @@ const OWNER = "mukta92";
 const REPO = "mukta-design";
 const BRANCH = "main";
 const CARDS_FILE = "cards.json";
+
 const MAX_IMAGE_BYTES = 500 * 1024;
 
 const IMAGE_TYPES = {
@@ -110,17 +111,31 @@ const IMAGE_TYPES = {
     "image/webp": "webp"
 };
 
+
+/* =========================
+   STATUS MESSAGE
+========================= */
+
 function setStatus(msg, type) {
-    const el = document.getElementById('status');
+
+    const el = document.getElementById("status");
+
     el.textContent = msg;
     el.className = type;
 }
 
+
+/* =========================
+   BASE64 HELPERS
+========================= */
+
 function bytesToBase64(bytes) {
+
     let binary = "";
     const chunk = 0x8000;
 
     for (let i = 0; i < bytes.length; i += chunk) {
+
         binary += String.fromCharCode.apply(
             null,
             bytes.subarray(i, i + chunk)
@@ -130,36 +145,70 @@ function bytesToBase64(bytes) {
     return btoa(binary);
 }
 
+
 function textToBase64(str) {
-    return bytesToBase64(new TextEncoder().encode(str));
+
+    return bytesToBase64(
+        new TextEncoder().encode(str)
+    );
 }
 
+
 function base64ToText(b64) {
-    const binary = atob(b64.replace(/\n/g, ""));
+
+    const binary = atob(
+        b64.replace(/\n/g, "")
+    );
+
     const bytes = Uint8Array.from(
         binary,
         c => c.charCodeAt(0)
     );
+
     return new TextDecoder().decode(bytes);
 }
 
+
 async function fileToBase64(file) {
+
     const buffer = await file.arrayBuffer();
-    return bytesToBase64(new Uint8Array(buffer));
+
+    return bytesToBase64(
+        new Uint8Array(buffer)
+    );
 }
 
+
+/* =========================
+   GITHUB API
+========================= */
+
 function apiUrl(path) {
+
     return `https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`;
 }
 
+
 function authHeaders(token) {
+
     return {
         Authorization: `Bearer ${token}`,
         Accept: "application/vnd.github+json"
     };
 }
 
-async function putFile(token, path, contentB64, message, sha) {
+
+/* =========================
+   UPLOAD / UPDATE FILE
+========================= */
+
+async function putFile(
+    token,
+    path,
+    contentB64,
+    message,
+    sha
+) {
 
     const body = {
         message: message,
@@ -167,79 +216,227 @@ async function putFile(token, path, contentB64, message, sha) {
         branch: BRANCH
     };
 
+    /*
+     * SHA is required when updating
+     * an existing GitHub file.
+     */
     if (sha) {
         body.sha = sha;
     }
 
-    const res = await fetch(apiUrl(path), {
-        method: "PUT",
-        headers: Object.assign(
-            { "Content-Type": "application/json" },
-            authHeaders(token)
-        ),
-        body: JSON.stringify(body)
-    });
+    const res = await fetch(
+        apiUrl(path),
+        {
+            method: "PUT",
+
+            headers: Object.assign(
+                {
+                    "Content-Type": "application/json"
+                },
+                authHeaders(token)
+            ),
+
+            body: JSON.stringify(body)
+        }
+    );
+
+    const responseText = await res.text();
+
+    let data = {};
+
+    try {
+
+        if (responseText) {
+            data = JSON.parse(responseText);
+        }
+
+    } catch (e) {
+
+        data = {};
+    }
 
     if (!res.ok) {
 
-        let msg = "Failed to upload " + path;
-
-        try {
-            msg = (await res.json()).message || msg;
-        } catch (e) {}
-
-        throw new Error(msg);
+        throw new Error(
+            data.message ||
+            `GitHub error ${res.status} while saving ${path}`
+        );
     }
+
+    return data;
 }
+
+
+/* =========================
+   READ CARDS.JSON
+========================= */
 
 async function readCards(token) {
 
     const res = await fetch(
-        apiUrl(CARDS_FILE) + "?ref=" + BRANCH,
+        apiUrl(CARDS_FILE) +
+        "?ref=" +
+        BRANCH,
+
         {
             headers: authHeaders(token),
             cache: "no-store"
         }
     );
 
-    const data = await res.json();
+    const responseText = await res.text();
+
+    let data = {};
+
+    try {
+
+        if (responseText) {
+            data = JSON.parse(responseText);
+        }
+
+    } catch (e) {
+
+        throw new Error(
+            "GitHub returned an invalid response while reading cards.json."
+        );
+    }
+
 
     if (!res.ok) {
+
         throw new Error(
-            `Could not read cards.json. GitHub returned ${res.status}: ${data.message || "Unknown error"}`
+            `Could not read cards.json. GitHub returned ${res.status}: ${
+                data.message || "Unknown error"
+            }`
         );
     }
 
+
     if (!data.sha) {
+
         throw new Error(
-            "GitHub returned cards.json but did not provide its SHA."
+            "GitHub did not provide the SHA for cards.json."
         );
     }
+
+
+    if (!data.content) {
+
+        throw new Error(
+            "GitHub returned cards.json without its content."
+        );
+    }
+
 
     const parsed = JSON.parse(
         base64ToText(data.content) || "[]"
     );
 
+
     if (!Array.isArray(parsed)) {
-        throw new Error("cards.json must contain a list.");
+
+        throw new Error(
+            "cards.json must contain a list."
+        );
     }
 
+
     return {
+
         cards: parsed,
+
         sha: data.sha
     };
 }
 
+
+/* =========================
+   CHECK IF FILE EXISTS
+========================= */
+
+async function fileExists(token, path) {
+
+    const res = await fetch(
+
+        apiUrl(path) +
+        "?ref=" +
+        BRANCH,
+
+        {
+            headers: authHeaders(token),
+            cache: "no-store"
+        }
+    );
+
+
+    if (res.status === 404) {
+
+        return false;
+    }
+
+
+    if (!res.ok) {
+
+        const responseText = await res.text();
+
+        let data = {};
+
+        try {
+
+            if (responseText) {
+                data = JSON.parse(responseText);
+            }
+
+        } catch (e) {}
+
+
+        throw new Error(
+            data.message ||
+            `Could not check ${path}.`
+        );
+    }
+
+
+    return true;
+}
+
+
+/* =========================
+   PUBLISH CARD
+========================= */
+
 async function publishCard() {
 
-    const token = document.getElementById('token').value.trim();
-    const title = document.getElementById('title').value.trim();
-    const filenameInput = document.getElementById('filename').value.trim();
-    const code = document.getElementById('code').value.trim();
-    const file = document.getElementById('image').files[0];
-    const btn = document.getElementById('publishBtn');
+    const token =
+        document.getElementById("token").value.trim();
 
-    if (!token || !title || !filenameInput || !code || !file) {
+    const title =
+        document.getElementById("title").value.trim();
+
+    const filenameInput =
+        document.getElementById("filename").value.trim();
+
+    const code =
+        document.getElementById("code").value.trim();
+
+    const file =
+        document.getElementById("image").files[0];
+
+    const btn =
+        document.getElementById("publishBtn");
+
+
+    /* =========================
+       BASIC VALIDATION
+    ========================= */
+
+    if (
+        !token ||
+        !title ||
+        !filenameInput ||
+        !code ||
+        !file
+    ) {
 
         setStatus(
             "Please fill in Token, Title, File Name, Image and Code.",
@@ -249,25 +446,27 @@ async function publishCard() {
         return;
     }
 
-    /*
-     * Add .txt automatically if the user didn't type it.
-     */
+
+    /* =========================
+       FILE NAME
+    ========================= */
+
     let filename = filenameInput;
 
-    if (!filename.toLowerCase().endsWith(".txt")) {
+
+    if (
+        !filename
+            .toLowerCase()
+            .endsWith(".txt")
+    ) {
+
         filename += ".txt";
     }
 
-    /*
-     * Only allow:
-     * A-Z
-     * a-z
-     * 0-9
-     * hyphen
-     * underscore
-     * .txt
-     */
-    if (!/^[A-Za-z0-9_-]+\.txt$/i.test(filename)) {
+
+    if (
+        !/^[A-Za-z0-9_-]+\.txt$/i.test(filename)
+    ) {
 
         setStatus(
             "Invalid file name. Use only letters, numbers, hyphens and underscores.",
@@ -277,7 +476,13 @@ async function publishCard() {
         return;
     }
 
+
+    /* =========================
+       IMAGE TYPE
+    ========================= */
+
     const ext = IMAGE_TYPES[file.type];
+
 
     if (!ext) {
 
@@ -289,6 +494,11 @@ async function publishCard() {
         return;
     }
 
+
+    /* =========================
+       IMAGE SIZE
+    ========================= */
+
     if (file.size > MAX_IMAGE_BYTES) {
 
         setStatus(
@@ -299,94 +509,216 @@ async function publishCard() {
         return;
     }
 
+
+    /* =========================
+       DISABLE BUTTON
+    ========================= */
+
     btn.disabled = true;
+
 
     setStatus(
         "Publishing... please wait.",
         "loading"
     );
 
+
     try {
 
-        /*
-         * Keep the existing random ID for the card and image.
-         */
-        const id = "c" + Date.now().toString(36);
+        /* =========================
+           GENERATE CARD ID
+        ========================= */
 
-        const imagePath = `images/${id}.${ext}`;
+        const id =
+            "c" +
+            Date.now().toString(36);
 
-        /*
-         * Source code uses the filename chosen by you.
-         */
-        const snippetPath = `snippets/${filename}`;
 
-        /*
-         * Upload image.
-         */
+        const imagePath =
+            `images/${id}.${ext}`;
+
+
+        const snippetPath =
+            `snippets/${filename}`;
+
+
+        /* =========================
+           CHECK DUPLICATE SNIPPET
+        ========================= */
+
+        const snippetAlreadyExists =
+            await fileExists(
+                token,
+                snippetPath
+            );
+
+
+        if (snippetAlreadyExists) {
+
+            throw new Error(
+                `The file "${filename}" already exists. Please choose a different file name.`
+            );
+        }
+
+
+        /* =========================
+           UPLOAD IMAGE
+        ========================= */
+
+        setStatus(
+            "Uploading image...",
+            "loading"
+        );
+
+
         await putFile(
+
             token,
+
             imagePath,
+
             await fileToBase64(file),
+
             `Add image: ${title}`
         );
 
-        /*
-         * Upload source code.
-         */
+
+        /* =========================
+           UPLOAD SNIPPET
+        ========================= */
+
+        setStatus(
+            "Uploading source code...",
+            "loading"
+        );
+
+
         await putFile(
+
             token,
+
             snippetPath,
+
             textToBase64(code),
+
             `Add snippet: ${title}`
         );
 
-        /*
-         * Read the latest cards.json AFTER
-         * uploading the image and snippet.
-         */
-        const current = await readCards(token);
+
+        /* =========================
+           READ LATEST CARDS.JSON
+        ========================= */
+
+        setStatus(
+            "Updating cards.json...",
+            "loading"
+        );
+
+
+        const current =
+            await readCards(token);
+
+
+        /* =========================
+           ADD NEW CARD
+        ========================= */
 
         current.cards.unshift({
+
             id: id,
+
             title: title,
+
             image: imagePath,
+
             snippet: snippetPath
         });
 
-        /*
-         * Update cards.json using its current SHA.
-         */
+
+        /* =========================
+           UPDATE CARDS.JSON
+        ========================= */
+
         await putFile(
+
             token,
+
             CARDS_FILE,
+
             textToBase64(
-                JSON.stringify(current.cards, null, 2) + "\n"
+
+                JSON.stringify(
+                    current.cards,
+                    null,
+                    2
+                ) + "\n"
+
             ),
+
             `Add card: ${title}`,
+
             current.sha
         );
 
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
         setStatus(
+
             `Published successfully! Code saved as ${filename}. Live in about 30-60 seconds.`,
+
             "success"
         );
 
-        /*
-         * Clear form.
-         */
-        document.getElementById('title').value = '';
-        document.getElementById('filename').value = '';
-        document.getElementById('code').value = '';
-        document.getElementById('image').value = '';
+
+        /* =========================
+           CLEAR FORM
+        ========================= */
+
+        document.getElementById(
+            "title"
+        ).value = "";
+
+
+        document.getElementById(
+            "filename"
+        ).value = "";
+
+
+        document.getElementById(
+            "code"
+        ).value = "";
+
+
+        document.getElementById(
+            "image"
+        ).value = "";
+
 
     } catch (err) {
 
+
+        /* =========================
+           ERROR
+        ========================= */
+
         setStatus(
-            "Error: " + err.message,
+
+            "Error: " +
+            err.message,
+
             "error"
         );
 
+
     } finally {
+
+
+        /* =========================
+           ENABLE BUTTON
+        ========================= */
 
         btn.disabled = false;
     }
