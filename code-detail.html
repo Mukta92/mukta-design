@@ -54,7 +54,7 @@
         const params = new URLSearchParams(window.location.search);
         const cardId = params.get('id') || '';
 
-        if (!/^[a-z0-9-]+$/.test(cardId)) {
+        if (!/^[a-zA-Z0-9_-]+$/.test(cardId)) {
             showMessage('No card specified.');
             return;
         }
