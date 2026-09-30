@@ -1,4 +1,0 @@
-<a href="https://www.trustpilot.com/review/yourstore.com"
-   target="_blank"
-   rel="noopener noreferrer"
-   class="ptb-trustpilot-link">
