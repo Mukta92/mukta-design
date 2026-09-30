@@ -203,20 +203,19 @@ async function readCards(token) {
         }
     );
 
-    if (res.status === 404) {
-        return {
-            cards: [],
-            sha: null
-        };
-    }
+    const data = await res.json();
 
     if (!res.ok) {
         throw new Error(
-            "Could not read cards.json. Check your token and repo details."
+            `Could not read cards.json. GitHub returned ${res.status}: ${data.message || "Unknown error"}`
         );
     }
 
-    const data = await res.json();
+    if (!data.sha) {
+        throw new Error(
+            "GitHub returned cards.json but did not provide its SHA."
+        );
+    }
 
     const parsed = JSON.parse(
         base64ToText(data.content) || "[]"
@@ -224,10 +223,6 @@ async function readCards(token) {
 
     if (!Array.isArray(parsed)) {
         throw new Error("cards.json must contain a list.");
-    }
-
-    if (!data.sha) {
-        throw new Error("Could not get the current cards.json SHA.");
     }
 
     return {
