@@ -209,21 +209,24 @@ async function readCards(token) {
         );
     }
 
-    const data = await res.json();
+const data = await res.json();
 
-    const parsed = JSON.parse(
-        base64ToText(data.content) || "[]"
-    );
+const parsed = JSON.parse(
+    base64ToText(data.content) || "[]"
+);
 
-    if (!Array.isArray(parsed)) {
-        throw new Error("cards.json must contain a list.");
-    }
-
-    return {
-        cards: parsed,
-        sha: data.sha
-    };
+if (!Array.isArray(parsed)) {
+    throw new Error("cards.json must contain a list.");
 }
+
+if (!data.sha) {
+    throw new Error("Could not get the current cards.json SHA.");
+}
+
+return {
+    cards: parsed,
+    sha: data.sha
+};
 
 async function publishCard() {
 
