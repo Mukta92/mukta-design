@@ -1,0 +1,13 @@
+/* =========================
+   GENERATE CARD ID
+========================= */
+
+const id = filename.replace(/\.txt$/i, "");
+
+
+const imagePath =
+    `images/${id}.${ext}`;
+
+
+const snippetPath =
+    `snippets/${filename}`;
