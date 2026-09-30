@@ -529,17 +529,13 @@ async function publishCard() {
            GENERATE CARD ID
         ========================= */
 
-        const id =
-            "c" +
-            Date.now().toString(36);
+const id = filename.replace(/\.txt$/i, "");
 
+const imagePath =
+    `images/${id}.${ext}`;
 
-        const imagePath =
-            `images/${id}.${ext}`;
-
-
-        const snippetPath =
-            `snippets/${filename}`;
+const snippetPath =
+    `snippets/${filename}`;
 
 
         /* =========================
